@@ -26,11 +26,14 @@ export default function Navbar() {
       <a className="navbar-label">Browse Events</a>
       <div style={{ flex: 1 }}></div>
       <a className="navbar-label">Login</a>
-      <a className="navbar-label">Sign up</a>
+      <Link className="navbar-label" to="/signup">
+        Sign up
+      </Link>
     </>
   );
 
   if (width > 500) {
+    setMenuDrawerOpen(false);
     return (
       <nav className="navbar">
         <Link className="navbar-label" to="/">

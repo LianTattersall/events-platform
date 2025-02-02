@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import { MenuDrawerProvider } from "./Contexts/MenuDrawContext";
 import Navbar from "./Components/Navbar";
 import MenuDrawer from "./Components/MenuDrawer";
+import SignUp from "./Pages/SignUp";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -15,6 +16,7 @@ function App() {
       <MenuDrawer />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<SignUp />}></Route>
       </Routes>
     </MenuDrawerProvider>
   );

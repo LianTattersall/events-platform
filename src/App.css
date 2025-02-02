@@ -21,6 +21,8 @@
   transition-property: margin;
   transition-duration: 400ms;
   position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 .margin-with-drawer {
@@ -28,6 +30,8 @@
   transition-property: margin;
   transition-duration: 400ms;
   position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 .button-no-display {
@@ -58,8 +62,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  z-index: 2;
+  background-color: white;
 }
 
 .drawer-label {
   border-bottom: 1px solid #3b3a30;;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: center;
+  margin-top: 50px;
+  justify-content: space-around; 
+  height: 400px;
+}
+
+.error {
+  color: red;
+}
+
+.centre-style {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 }
