@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
+import { Link } from "react-router";
 
 export default function MenuDrawer() {
   const { menuDrawerOpen } = useContext(MenuDrawerContext);
@@ -8,7 +9,9 @@ export default function MenuDrawer() {
     <>
       <p className="drawer-label">Browse Events</p>
       <p className="drawer-label">Login</p>
-      <p className="drawer-label">Sign up</p>
+      <Link className="drawer-label" to="/signup">
+        Sign up
+      </Link>
     </>
   );
   return (
