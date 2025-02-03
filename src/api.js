@@ -13,3 +13,23 @@ export const getUser = (user_id) => {
     return data;
   });
 };
+
+export const getTicketMaster = () => {
+  return eventsApi
+    .get("/ticketMaster/events.json", {
+      params: {
+        countryCode: "gb",
+        startDateTime: "2025-02-04T00:00:00Z",
+        endDateTime: "2025-02-04T23:00:00Z",
+      },
+    })
+    .then(
+      ({
+        data: {
+          data: { _embedded },
+        },
+      }) => {
+        console.log(_embedded);
+      }
+    );
+};
