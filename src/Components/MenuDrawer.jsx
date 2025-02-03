@@ -41,12 +41,22 @@ export default function MenuDrawer() {
       <LogoutButton />
     </>
   );
+
+  const loggedIn = (
+    <>
+      <a className="drawer-label">Browse Events</a>
+      <a className="drawer-label">My Signups</a>
+      <a className="drawer-label">Saved Events</a>
+      <LogoutButton />
+    </>
+  );
   return (
     <nav
       className={`drawer ${menuDrawerOpen ? "drawer-open" : "drawer-closed"}`}
     >
       {userStatus == "admin" ? loggedInAdmin : null}
       {userStatus == null ? notLoggedIn : null}
+      {userStatus == "non-admin" ? loggedIn : null}
     </nav>
   );
 }

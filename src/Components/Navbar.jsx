@@ -57,6 +57,16 @@ export default function Navbar() {
     </>
   );
 
+  const loggedIn = (
+    <>
+      <a className="navbar-label">Browse Events</a>
+      <a className="navbar-label">My Signups</a>
+      <a className="navbar-label">Saved Events</a>
+      <div style={{ flex: 1 }}></div>
+      <LogoutButton />
+    </>
+  );
+
   if (width > 500 && userStatus == null) {
     setMenuDrawerOpen(false);
     return (
@@ -75,6 +85,16 @@ export default function Navbar() {
           EventOganiser
         </Link>
         {loggedInAdmin}
+      </nav>
+    );
+  } else if (width > 600 && userStatus == "non-admin") {
+    setMenuDrawerOpen(false);
+    return (
+      <nav className="navbar">
+        <Link className="navbar-label" to="/">
+          EventOganiser
+        </Link>
+        {loggedIn}
       </nav>
     );
   } else {
