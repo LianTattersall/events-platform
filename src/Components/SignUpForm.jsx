@@ -1,31 +1,43 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { auth } from "../../firebase";
 import { postUser } from "../api";
+import { useNavigate } from "react-router";
+import { UserContext } from "../Contexts/UserContext";
 
 export default function SignUpForm() {
-  const [name, setName] = useState("");
+  const [nameInput, setNameInput] = useState("");
   const [email, setEmail] = useState("");
-  const [admin, setAdmin] = useState(true);
+  const [adminInput, setAdminInput] = useState(true);
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  console.log(password, passwordConfirm, admin);
+  const { setUserId, setName, setAdmin } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   function createUser(e) {
     e.preventDefault();
     if (password != passwordConfirm) {
       setError("Passwords do not match");
+    } else if (nameInput == "") {
+      setError("Please enter a name");
     } else {
       setLoading(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((data) => {
-          return postUser(data.user.uid, name, email, admin);
+          return postUser(data.user.uid, nameInput, email, adminInput);
         })
-        .then(({ data }) => {
-          localStorage.setItem("user_id", data.user.user_id);
+        .then(({ data: { user } }) => {
+          localStorage.setItem("user_id", user.user_id);
+          localStorage.setItem("name", user.name);
+          localStorage.setItem("admin", user.admin);
+          setUserId(user.user_id);
+          setName(user.name);
+          setAdmin(String(user.admin));
+          navigate("/");
         })
         .catch((err) => {
           setLoading(false);
@@ -36,7 +48,10 @@ export default function SignUpForm() {
             setError("This email is already in use");
           } else if (err.code == "auth/invalid-email") {
             setError("Invalid email address");
+          } else if (err.code == "auth/missing-password") {
+            setError("Please enter a password");
           }
+          console.log(err);
         });
     }
   }
@@ -51,15 +66,15 @@ export default function SignUpForm() {
 
   return (
     <>
-      <form className="signup-form">
+      <form className="form">
         <label htmlFor="name">Name</label>
         <input
           type="text"
           id="name"
           onChange={(e) => {
-            setName(e.target.value);
+            setNameInput(e.target.value);
           }}
-          value={name}
+          value={nameInput}
         />
         <label htmlFor="email">Email</label>
         <input
@@ -76,9 +91,9 @@ export default function SignUpForm() {
             type="radio"
             id="admin"
             name="admin"
-            checked={admin}
+            checked={adminInput}
             onChange={() => {
-              setAdmin(true);
+              setAdminInput(true);
             }}
           ></input>
           <label htmlFor="not-admin">Non Staff Member</label>
@@ -86,9 +101,9 @@ export default function SignUpForm() {
             type="radio"
             id="not-admin"
             name="admin"
-            checked={!admin}
+            checked={!adminInput}
             onChange={() => {
-              setAdmin(false);
+              setAdminInput(false);
             }}
           ></input>
         </div>
