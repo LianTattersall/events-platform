@@ -13,7 +13,7 @@
 
 .navbar-label {
   margin-left: 15px;
-  margin-right: 15px
+  margin-right: 15px;
 }
 
 .margin-no-drawer {
@@ -67,16 +67,16 @@
 }
 
 .drawer-label {
-  border-bottom: 1px solid #3b3a30;;
+  border-bottom: 1px solid #3b3a30;
 }
 
-.signup-form {
+.form {
   display: flex;
   flex-direction: column;
   width: 100vw;
   align-items: center;
   margin-top: 50px;
-  justify-content: space-around; 
+  justify-content: space-around;
   height: 400px;
 }
 
