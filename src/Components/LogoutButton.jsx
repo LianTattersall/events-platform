@@ -17,7 +17,7 @@ export default function LogoutButton() {
   }
   return (
     <button onClick={handleLogout} className="button-no-display">
-      Logout
+      <p className="navbar-label">Logout</p>
     </button>
   );
 }
