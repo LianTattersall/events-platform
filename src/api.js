@@ -9,18 +9,30 @@ export const postUser = (user_id, name, email, admin) => {
 };
 
 export const getUser = (user_id) => {
-  return eventsApi.get(`/users/${user_id}`).then(({ data }) => {
-    return data;
-  });
+  return eventsApi
+    .get(`/users/${user_id}`)
+    .then(({ data }) => {
+      return data;
+    })
+    .catch((err) => err);
 };
 
-export const getTicketMaster = () => {
+export const getUpcomingTicketMaster = () => {
+  const start = new Date();
+  start.setDate(start.getDate() + 7);
+  start.setHours(0, 0, 0);
+
+  const end = new Date();
+  end.setDate(end.getDate() + 7);
+  end.setHours(23, 0, 0);
+
   return eventsApi
-    .get("/ticketMaster/events.json", {
+    .get("/ticketMaster/events.json?size=5", {
       params: {
         countryCode: "gb",
-        startDateTime: "2025-02-04T00:00:00Z",
-        endDateTime: "2025-02-04T23:00:00Z",
+        startDateTime: start.toISOString().slice(0, -5) + "Z",
+        //endDateTime: end.toISOString().slice(0, -5) + "Z",
+        sort: "date,asc",
       },
     })
     .then(
@@ -29,7 +41,17 @@ export const getTicketMaster = () => {
           data: { _embedded },
         },
       }) => {
-        console.log(_embedded);
+        _embedded.events.forEach((element) => {
+          element.images = element.images.filter((img) => img.ratio == "16_9");
+        });
+        return _embedded;
       }
-    );
+    )
+    .catch((err) => err);
+};
+
+export const getTicketMasterById = (event_id) => {
+  return eventsApi(`/ticketMaster/events/${event_id}`).then(({ data }) => {
+    return data.data;
+  });
 };
