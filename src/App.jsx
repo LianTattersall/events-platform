@@ -8,6 +8,7 @@ import MenuDrawer from "./Components/MenuDrawer";
 import SignUp from "./Pages/SignUp";
 import Login from "./Pages/Login";
 import { UserContextProvider } from "./Contexts/UserContext";
+import ExternalEvent from "./Pages/ExternalEvent";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/externalEvent/:event_id" element={<ExternalEvent />} />
         </Routes>
       </MenuDrawerProvider>
     </UserContextProvider>
