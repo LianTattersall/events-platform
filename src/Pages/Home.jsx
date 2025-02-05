@@ -18,8 +18,8 @@ export default function Home() {
         setLoading(false);
       })
       .catch((err) => {
-        setLoading(false);
         setError(true);
+        setLoading(false);
       });
 
     function moniterWidth() {
