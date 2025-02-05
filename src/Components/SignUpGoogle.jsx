@@ -12,13 +12,16 @@ export default function SignUpGoogle() {
     useContext(UserContext);
 
   const [error, setError] = useState("");
+
   const [adminInput, setAdminInput] = useState(true);
 
   function handleGoogleSignIn() {
     const login = useGoogleLogin({
       onSuccess: (codeResponse) => {
+        localStorage.setItem("access_token", codeResponse.access_token);
         setAccessToken(codeResponse.access_token);
-        axios
+
+        return axios
           .get(
             `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${codeResponse.access_token}`,
             {
@@ -32,13 +35,15 @@ export default function SignUpGoogle() {
             return postUser(data.id, data.name, data.email, adminInput);
           })
           .then(({ data: { user } }) => {
+            localStorage.setItem("user_id", user.user_id);
+            localStorage.setItem("name", user.name);
+            localStorage.setItem("admin", user.admin);
             setUserId(user.user_id);
             setName(user.name);
             setAdmin(user.admin);
             navigate("/");
           })
           .catch((err) => {
-            console.log(err.message);
             if (err.message == "Request failed with status code 403") {
               setError(
                 "An account already exists with this email, try logging in"
@@ -51,6 +56,7 @@ export default function SignUpGoogle() {
     });
     return login;
   }
+
   return (
     <>
       <form className="form">
