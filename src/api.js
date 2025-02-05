@@ -9,12 +9,9 @@ export const postUser = (user_id, name, email, admin) => {
 };
 
 export const getUser = (user_id) => {
-  return eventsApi
-    .get(`/users/${user_id}`)
-    .then(({ data }) => {
-      return data;
-    })
-    .catch((err) => err);
+  return eventsApi.get(`/users/${user_id}`).then(({ data }) => {
+    return data;
+  });
 };
 
 export const getUpcomingTicketMaster = () => {
@@ -46,8 +43,7 @@ export const getUpcomingTicketMaster = () => {
         });
         return _embedded;
       }
-    )
-    .catch((err) => err);
+    );
 };
 
 export const getTicketMasterById = (event_id) => {
