@@ -6,7 +6,9 @@ export const UserContextProvider = ({ children }) => {
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
   const [admin, setAdmin] = useState(localStorage.getItem("admin"));
   const [name, setName] = useState(localStorage.getItem("name"));
-  const [accessTocken, setAccessToken] = useState("");
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("access_token")
+  );
   return (
     <UserContext.Provider
       value={{
@@ -16,7 +18,7 @@ export const UserContextProvider = ({ children }) => {
         setAdmin,
         name,
         setName,
-        accessTocken,
+        accessToken,
         setAccessToken,
       }}
     >
