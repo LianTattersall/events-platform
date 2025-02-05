@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { getTicketMasterById } from "../api";
+import AddToGoogleCal from "../Components/AddToGoogleCal";
 
 export default function ExternalEvent() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -67,7 +68,11 @@ export default function ExternalEvent() {
       <a href={event.url} target="_blank">
         Book Tickets Here
       </a>
-      <button>Add to google Calendar</button>
+      <AddToGoogleCal
+        eventName={event.name}
+        date={event.dates.start.localDate}
+        dateTime={event.dates.start.dateTime}
+      />
     </div>
   );
 }
