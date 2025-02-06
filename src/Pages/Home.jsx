@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import EventSlider from "../Components/EventSlider";
-import { getUpcomingTicketMaster } from "../api";
+import { getEvents, getUpcomingTicketMaster } from "../api";
+import DisplayEvents from "../Components/DisplayEvents";
 
 export default function Home() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -10,11 +11,16 @@ export default function Home() {
   const [width, setWidth] = useState(window.innerWidth);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [displayEvents, setDisplayEvents] = useState([]);
 
   useEffect(() => {
     getUpcomingTicketMaster()
       .then((data) => {
         setEvents(data.events);
+        return getEvents();
+      })
+      .then(({ events }) => {
+        setDisplayEvents(events);
         setLoading(false);
       })
       .catch((err) => {
@@ -78,6 +84,8 @@ export default function Home() {
       <div style={containerStyles}>
         <EventSlider events={events} parentWidth={width >= 500 ? 500 : width} />
       </div>
+      <div style={{ height: "20px" }}></div>
+      <DisplayEvents events={displayEvents} />
     </div>
   );
 }
