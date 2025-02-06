@@ -36,7 +36,7 @@ export default function LoginGoogle() {
             localStorage.setItem("admin", user.admin);
             setUserId(user.user_id);
             setName(user.name);
-            setAdmin(user.admin);
+            setAdmin(String(user.admin));
             navigate("/");
           })
           .catch((err) => {

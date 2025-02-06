@@ -11,7 +11,7 @@ export default function MenuDrawer() {
   const [userStatus, setUserStatus] = useState(null);
 
   useEffect(() => {
-    if (userId != null && admin == "true") {
+    if (userId != null && String(admin) == "true") {
       setUserStatus("admin");
     } else if (userId != null) {
       setUserStatus("non-admin");
