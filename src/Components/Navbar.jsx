@@ -12,7 +12,7 @@ export default function Navbar() {
   const { userId, admin } = useContext(UserContext);
 
   useEffect(() => {
-    if (userId != null && admin == "true") {
+    if (userId != null && String(admin) == "true") {
       setUserStatus("admin");
     } else if (userId != null) {
       setUserStatus("non-admin");
@@ -28,7 +28,7 @@ export default function Navbar() {
 
     return () => window.removeEventListener("resize", moniterWidth);
   }, [userId]);
-  console.log();
+
   function openCloseDraw() {
     setMenuDrawerOpen((curr) => !curr);
   }
