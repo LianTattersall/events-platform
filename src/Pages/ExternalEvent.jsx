@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { getTicketMasterById } from "../api";
 import AddToGoogleCal from "../Components/AddToGoogleCal";
+import SaveButton from "../Components/SaveButton";
 
 export default function ExternalEvent() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -73,6 +74,7 @@ export default function ExternalEvent() {
         date={event.dates.start.localDate}
         dateTime={event.dates.start.dateTime}
       />
+      <SaveButton type="ticketMaster" event_id={event_id} />
     </div>
   );
 }
