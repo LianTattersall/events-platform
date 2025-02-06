@@ -63,3 +63,51 @@ export const getEventById = (event_id) => {
     return data;
   });
 };
+
+export const getSignUpStatus = (user_id, event_id) => {
+  return eventsApi.get(`/users/${user_id}/signups/${event_id}`);
+};
+
+export const postSignup = (user_id, event_id) => {
+  return eventsApi
+    .post(`/users/${user_id}/signups`, { event_id })
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const getSavedStatus = (user_id, event_id) => {
+  return eventsApi
+    .get(`/users/${user_id}/saved/${event_id}`)
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const postSaved = (user_id, event_id) => {
+  return eventsApi
+    .post(`/users/${user_id}/saved`, { event_id })
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const getSignups = (user_id, p) => {
+  return eventsApi
+    .get(`/users/${user_id}/signups`, { params: { p } })
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const postSavedTicketMaster = (user_id, event_id) => {
+  return eventsApi
+    .post(`/externalEvents/${user_id}`, { event_id })
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const deleteSignup = (user_id, event_id) => {
+  return eventsApi.delete(`/users/${user_id}/signups/${event_id}`);
+};
