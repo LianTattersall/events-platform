@@ -22,7 +22,9 @@ export default function MenuDrawer() {
 
   const notLoggedIn = (
     <>
-      <p className="drawer-label">Browse Events</p>
+      <Link to="/browseEvents">
+        <p className="drawer-label">Browse Events</p>
+      </Link>
       <Link className="drawer-label" to="/login">
         Login
       </Link>
@@ -34,18 +36,27 @@ export default function MenuDrawer() {
 
   const loggedInAdmin = (
     <>
-      <a className="drawer-label">Browse Events</a>
-      <a className="drawer-label">My Signups</a>
+      <Link to="/browseEvents">
+        <p className="drawer-label">Browse Events</p>
+      </Link>
+      <Link to={`/signups/${userId}`}>
+        <p className="drawer-label">My Signups</p>
+      </Link>
       <a className="drawer-label">Saved Events</a>
       <a className="drawer-label">Manage Events</a>
+      <a className="drawer-label">Create Event</a>
       <LogoutButton />
     </>
   );
 
   const loggedIn = (
     <>
-      <a className="drawer-label">Browse Events</a>
-      <a className="drawer-label">My Signups</a>
+      <Link to="/browseEvents">
+        <p className="drawer-label">Browse Events</p>
+      </Link>
+      <Link to={`/signups/${userId}`}>
+        <p className="drawer-label">My Signups</p>
+      </Link>
       <a className="drawer-label">Saved Events</a>
       <LogoutButton />
     </>
