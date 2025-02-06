@@ -35,7 +35,9 @@ export default function Navbar() {
 
   const notLoggedIn = (
     <>
-      <a className="navbar-label">Browse Events</a>
+      <Link to={`/browseEvents`}>
+        <p className="navbar-label">Browse Events</p>
+      </Link>
       <div style={{ flex: 1 }}></div>
       <Link className="navbar-label" to="/login">
         Login
@@ -48,10 +50,15 @@ export default function Navbar() {
 
   const loggedInAdmin = (
     <>
-      <a className="navbar-label">Browse Events</a>
-      <a className="navbar-label">My Signups</a>
+      <Link to={`/browseEvents`}>
+        <p className="navbar-label">Browse Events</p>
+      </Link>
+      <Link to={`/signups/${userId}`}>
+        <p className="navbar-label">My Signups</p>
+      </Link>
       <a className="navbar-label">Saved Events</a>
       <a className="navbar-label">Manage Events</a>
+      <a className="navbar-label">Create Event</a>
       <div style={{ flex: 1 }}></div>
       <LogoutButton />
     </>
@@ -59,8 +66,12 @@ export default function Navbar() {
 
   const loggedIn = (
     <>
-      <a className="navbar-label">Browse Events</a>
-      <a className="navbar-label">My Signups</a>
+      <Link to={`/browseEvents`}>
+        <p className="navbar-label">Browse Events</p>
+      </Link>
+      <Link to={`/signups/${userId}`}>
+        <p className="navbar-label">My Signups</p>
+      </Link>
       <a className="navbar-label">Saved Events</a>
       <div style={{ flex: 1 }}></div>
       <LogoutButton />
@@ -77,7 +88,7 @@ export default function Navbar() {
         {notLoggedIn}
       </nav>
     );
-  } else if (width > 700 && userStatus == "admin") {
+  } else if (width > 800 && userStatus == "admin") {
     setMenuDrawerOpen(false);
     return (
       <nav className="navbar">
