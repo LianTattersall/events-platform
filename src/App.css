@@ -26,7 +26,7 @@
 }
 
 .margin-with-drawer {
-  margin-top: 351px;
+  margin-top: 301px;
   transition-property: margin;
   transition-duration: 400ms;
   position: absolute;
@@ -96,4 +96,17 @@
 .signup-method {
   display: inline;
   cursor: pointer;
+}
+
+.flex-wrap-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 40px;
+}
+
+.card-container {
+  width: 300px;
+  height: 400px;
 }
