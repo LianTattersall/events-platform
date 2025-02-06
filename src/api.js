@@ -51,3 +51,15 @@ export const getTicketMasterById = (event_id) => {
     return data.data;
   });
 };
+
+export const getEvents = () => {
+  return eventsApi.get("/events?limit=9&type=current").then(({ data }) => {
+    return data;
+  });
+};
+
+export const getEventById = (event_id) => {
+  return eventsApi.get(`/events/${event_id}`).then(({ data }) => {
+    return data;
+  });
+};
