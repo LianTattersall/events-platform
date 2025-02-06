@@ -27,7 +27,7 @@ export default function AddToGoogleCal({ eventName, date, dateTime }) {
     },
   };
 
-  function addToCal() {
+  function addToCal(accessToken) {
     setLoading(true);
     return axios
       .post(
@@ -53,7 +53,7 @@ export default function AddToGoogleCal({ eventName, date, dateTime }) {
     onSuccess: (codeResponse) => {
       setAccessToken(codeResponse.access_token);
       localStorage.setItem("access_token", codeResponse.access_token);
-      addToCal();
+      addToCal(codeResponse.access_token);
     },
     onError: (error) => console.log("Login Failed:", error),
     scope: "https://www.googleapis.com/auth/calendar.events.owned",
@@ -91,5 +91,9 @@ export default function AddToGoogleCal({ eventName, date, dateTime }) {
     );
   }
 
-  return <button onClick={addToCal}>Add to google calendar</button>;
+  return (
+    <button onClick={() => addToCal(accessToken)}>
+      Add to google calendar
+    </button>
+  );
 }
