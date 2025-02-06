@@ -2,9 +2,12 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useContext } from "react";
 import { UserContext } from "../Contexts/UserContext";
+import { useNavigate } from "react-router";
 
 export default function LogoutButton() {
   const { setUserId, setName, setAdmin } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   function handleLogout() {
     signOut(auth);
@@ -14,6 +17,7 @@ export default function LogoutButton() {
     setUserId(null);
     setName(null);
     setAdmin(null);
+    navigate("/");
   }
   return (
     <button onClick={handleLogout} className="button-no-display">
