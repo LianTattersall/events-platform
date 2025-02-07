@@ -1,5 +1,7 @@
 import { useContext } from "react";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
+import CommunityEventSearch from "../Components/CommunityEventSearch";
+import { Link } from "react-router";
 
 export default function BrowseEvents() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -10,6 +12,12 @@ export default function BrowseEvents() {
       onClick={() => {
         setMenuDrawerOpen(false);
       }}
-    ></div>
+    >
+      <Link to={"/browseEvents"}>Community events</Link>
+      <p style={{ display: "inline" }}> | </p>
+      <Link to={"/browseEventsTM"}>Ticket Master Events</Link>
+
+      <CommunityEventSearch />
+    </div>
   );
 }
