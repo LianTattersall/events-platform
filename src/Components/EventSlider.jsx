@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { getUpcomingTicketMaster } from "../api";
 import { Link } from "react-router";
 
 export default function EventSlider({ events, parentWidth }) {
@@ -26,9 +25,7 @@ export default function EventSlider({ events, parentWidth }) {
       backgroundPosition: "centre",
       backgroundSize: "cover",
       backgroundImage:
-        events.length != 0
-          ? `url(${events[index].images[events[index].images.length - 1].url})`
-          : "",
+        events.length != 0 ? `url(${events[index].images.url})` : "",
     };
   }
 
