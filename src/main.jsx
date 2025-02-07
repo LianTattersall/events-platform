@@ -7,9 +7,9 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 let googleClientId = "";
 async function getEnv() {
-  googleClientId = await import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 }
-await getEnv();
+getEnv();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
