@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { deleteSignup, getSignups } from "../api";
 import Modal from "@mui/material/Modal";
@@ -14,7 +14,7 @@ export default function MySignups() {
   const [eventToDelete, setEventToDelete] = useState({});
   const [error, setError] = useState(false);
   const [p, setP] = useState(1);
-  const [maxP, setMaxP] = useState(null);
+  const maxP = useRef(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,8 +22,8 @@ export default function MySignups() {
       setLoading(false);
       if (signups.length != 0) {
         setSignups(signups);
-      } else if (maxP == null) {
-        setMaxP(p - 1);
+      } else if (maxP.current == null) {
+        maxP.current = p - 1;
       }
     });
   }, [p]);
@@ -57,8 +57,8 @@ export default function MySignups() {
   }
 
   function goToPrev() {
-    if (p >= maxP) {
-      setP(maxP - 1);
+    if (p >= maxP.current) {
+      setP(maxP.current - 1);
     } else {
       setP((curr) => Math.max(1, curr - 1));
     }
