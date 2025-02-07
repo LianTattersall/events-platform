@@ -24,11 +24,11 @@ export const getUpcomingTicketMaster = () => {
   end.setHours(23, 0, 0);
 
   return eventsApi
-    .get("/ticketMaster/events.json?size=5", {
+    .get("/ticketMaster/events.json?", {
       params: {
         countryCode: "gb",
         startDateTime: start.toISOString().slice(0, -5) + "Z",
-        //endDateTime: end.toISOString().slice(0, -5) + "Z",
+        size: 5,
         sort: "date,asc",
       },
     })
@@ -39,7 +39,10 @@ export const getUpcomingTicketMaster = () => {
         },
       }) => {
         _embedded.events.forEach((element) => {
-          element.images = element.images.filter((img) => img.ratio == "16_9");
+          element.images = element.images.reduce(
+            (highest, img) => (img.width > highest.width ? img : highest),
+            element.images[0]
+          );
         });
         return _embedded;
       }
@@ -48,12 +51,17 @@ export const getUpcomingTicketMaster = () => {
 
 export const getTicketMasterById = (event_id) => {
   return eventsApi(`/ticketMaster/events/${event_id}`).then(({ data }) => {
-    return data.data;
+    const event = data.data;
+    event.images = event.images.reduce(
+      (highest, img) => (img.width > highest.width ? img : highest),
+      event.images[0]
+    );
+    return event;
   });
 };
 
 export const getEvents = () => {
-  return eventsApi.get("/events?limit=9&type=current").then(({ data }) => {
+  return eventsApi.get("/events?type=current").then(({ data }) => {
     return data;
   });
 };
@@ -110,4 +118,46 @@ export const postSavedTicketMaster = (user_id, event_id) => {
 
 export const deleteSignup = (user_id, event_id) => {
   return eventsApi.delete(`/users/${user_id}/signups/${event_id}`);
+};
+
+export const getEventsWithQueries = (sortby, orderby, searchTerm, type, p) => {
+  return eventsApi
+    .get("/events", { params: { sortby, orderby, searchTerm, type, p } })
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const getSavedStatusTicketMaster = (user_id, event_id) => {
+  return eventsApi
+    .get(`/externalEvents/${user_id}/${event_id}`)
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const getTicketMasterWithQueries = (
+  startDateTime,
+  keyword,
+  classificationName,
+  marketId
+) => {
+  return eventsApi
+    .get("/ticketMaster/events.json?size=15&countryCode=gb&sort=date,asc", {
+      params: { startDateTime, keyword, classificationName, marketId },
+    })
+    .then(({ data }) => {
+      if (data.data.page.totalElements == 0) {
+        return [];
+      }
+      const events = data.data._embedded.events;
+      events.forEach((element) => {
+        element.images = element.images.reduce(
+          (highest, img) => (img.width > highest.width ? img : highest),
+          element.images[0]
+        );
+      });
+
+      return events;
+    });
 };
