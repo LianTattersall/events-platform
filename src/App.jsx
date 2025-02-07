@@ -12,6 +12,7 @@ import ExternalEvent from "./Pages/ExternalEvent";
 import EventPage from "./Pages/EventPage";
 import MySignups from "./Pages/MySignups";
 import BrowseEvents from "./Pages/BrowseEvents";
+import BrowseEventsTM from "./Pages/BrowseEventsTM";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -29,6 +30,7 @@ function App() {
           <Route path="/events/:event_id" element={<EventPage />} />
           <Route path="/signups/:user_id" element={<MySignups />} />
           <Route path="/browseEvents" element={<BrowseEvents />} />
+          <Route path="/browseEventsTM" element={<BrowseEventsTM />} />
         </Routes>
       </MenuDrawerProvider>
     </UserContextProvider>
