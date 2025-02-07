@@ -60,7 +60,7 @@ export default function ExternalEvent() {
     >
       <h1>{event.name}</h1>
       <img
-        src={event.images[event.images.length - 1].url}
+        src={event.images.url}
         alt="An image related to the event"
         style={{ width: "100%", maxWidth: "500px" }}
       />
