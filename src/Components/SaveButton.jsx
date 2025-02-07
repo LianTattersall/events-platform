@@ -1,5 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { getSavedStatus, postSaved, postSavedTicketMaster } from "../api";
+import {
+  getSavedStatus,
+  getSavedStatusTicketMaster,
+  postSaved,
+  postSavedTicketMaster,
+} from "../api";
 import { UserContext } from "../Contexts/UserContext";
 import { Link } from "react-router";
 
@@ -10,13 +15,23 @@ export default function SaveButton({ type, event_id }) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getSavedStatus(userId, event_id)
-      .then(() => {
-        setAlreadySaved(true);
-      })
-      .catch(() => {
-        setAlreadySaved(false);
-      });
+    if (type == "ticketMaster") {
+      getSavedStatusTicketMaster(userId, event_id)
+        .then(() => {
+          setAlreadySaved(true);
+        })
+        .catch(() => {
+          setAlreadySaved(false);
+        });
+    } else {
+      getSavedStatus(userId, event_id)
+        .then(() => {
+          setAlreadySaved(true);
+        })
+        .catch(() => {
+          setAlreadySaved(false);
+        });
+    }
   }, []);
 
   function handleSave() {
