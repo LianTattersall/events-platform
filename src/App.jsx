@@ -13,6 +13,7 @@ import EventPage from "./Pages/EventPage";
 import MySignups from "./Pages/MySignups";
 import BrowseEvents from "./Pages/BrowseEvents";
 import BrowseEventsTM from "./Pages/BrowseEventsTM";
+import SavedEvents from "./Pages/SavedEvents";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -31,6 +32,7 @@ function App() {
           <Route path="/signups/:user_id" element={<MySignups />} />
           <Route path="/browseEvents" element={<BrowseEvents />} />
           <Route path="/browseEventsTM" element={<BrowseEventsTM />} />
+          <Route path="/savedEvents/:user_id" element={<SavedEvents />} />
         </Routes>
       </MenuDrawerProvider>
     </UserContextProvider>
