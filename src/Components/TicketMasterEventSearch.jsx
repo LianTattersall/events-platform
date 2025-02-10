@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getTicketMasterWithQueries } from "../api";
-import TicketMasterEventCard from "./TicketMasterEventCard";
+import EventCardSmall from "./EventCardSmall";
 
 export default function TicketMasterEventSearch() {
   const [events, setEvents] = useState([]);
@@ -8,20 +8,43 @@ export default function TicketMasterEventSearch() {
     new Date().toISOString().slice(0, -5) + "Z"
   );
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchTermInput, setSearchTermInput] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [genre, setGenre] = useState("");
   const [region, setRegion] = useState("");
+  const page = useRef(0);
+  const totalRef = useRef(0);
 
   useEffect(() => {
-    getTicketMasterWithQueries(start, searchTerm, genre, region)
-      .then((events) => {
+    setLoading(true);
+    getTicketMasterWithQueries(start, searchTerm, genre, region, 0)
+      .then(({ events, total }) => {
         setEvents(events);
         setLoading(false);
+        totalRef.current = total;
+        page.current = 0;
       })
       .catch((err) => {
         setLoading(false);
       });
-  }, [start, genre, region]);
+  }, [start, genre, region, searchTerm]);
+
+  function handleLoadMore() {
+    if (events.length < totalRef.current) {
+      setLoadingMore(true);
+      page.current += 1;
+
+      getTicketMasterWithQueries(start, searchTerm, genre, region, page.current)
+        .then(({ events }) => {
+          setEvents((curr) => [...curr, ...events]);
+          setLoadingMore(false);
+        })
+        .catch((err) => {
+          setLoadingMore(false);
+        });
+    }
+  }
 
   function handleDateChange(e) {
     setStart(new Date(e.target.value).toISOString().slice(0, -5) + "Z");
@@ -29,29 +52,18 @@ export default function TicketMasterEventSearch() {
 
   function handleEnter(e) {
     if (e.key == "Enter") {
-      setLoading(true);
-      getTicketMasterWithQueries(start, searchTerm, genre, region)
-        .then((events) => {
-          setEvents(events);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
+      setSearchTerm(searchTermInput);
     }
   }
 
   function handleSearch() {
-    setLoading(true);
-    getTicketMasterWithQueries(start, searchTerm, genre, region)
-      .then((events) => {
-        setEvents(events);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
+    setSearchTerm(searchTermInput);
   }
+
+  const loadMoreButton =
+    totalRef.current > events.length ? (
+      <button onClick={handleLoadMore}>Load more</button>
+    ) : null;
 
   return (
     <>
@@ -67,9 +79,9 @@ export default function TicketMasterEventSearch() {
         }}
         placeholder={"Search for events"}
         onChange={(e) => {
-          setSearchTerm(e.target.value);
+          setSearchTermInput(e.target.value);
         }}
-        value={searchTerm}
+        value={searchTermInput}
         onKeyDown={handleEnter}
       />
       <button onClick={handleSearch}>Search</button>
@@ -142,13 +154,21 @@ export default function TicketMasterEventSearch() {
           <p>Loading events...</p>
         ) : (
           events.map((event, index) => (
-            <TicketMasterEventCard key={index} event={event} />
+            <EventCardSmall
+              key={index}
+              event_id={event.id}
+              image_URL={event.images.url}
+              event_date={event.dates.start.localDate}
+              event_name={event.name}
+            />
           ))
         )}
+
         {events.length == 0 && !loading ? (
           <p>No events match this search. Sorry!</p>
         ) : null}
       </div>
+      {loadingMore ? <p>Loading more events...</p> : loadMoreButton}
     </>
   );
 }
