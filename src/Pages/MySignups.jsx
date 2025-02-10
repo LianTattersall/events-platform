@@ -12,21 +12,23 @@ export default function MySignups() {
   const [signups, setSignups] = useState([]);
   const [open, setOpen] = useState(false);
   const [eventToDelete, setEventToDelete] = useState({});
-  const [error, setError] = useState(false);
-  const [p, setP] = useState(1);
-  const maxP = useRef(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getSignups(userId, p).then(({ signups }) => {
-      setLoading(false);
-      if (signups.length != 0) {
-        setSignups(signups);
-      } else if (maxP.current == null) {
-        maxP.current = p - 1;
-      }
-    });
-  }, [p]);
+    getSignups(userId)
+      .then(({ signups }) => {
+        setLoading(false);
+        if (signups.length != 0) {
+          setSignups(signups);
+        } else if (maxP.current == null) {
+          maxP.current = p - 1;
+        }
+      })
+      .catch(() => {
+        setError(true);
+      });
+  }, []);
 
   function handleDeleteClick(event_id, event_name) {
     setEventToDelete({ event_id, event_name });
@@ -47,20 +49,8 @@ export default function MySignups() {
       setOpen(false);
       deleteSignup(userId, eventToDelete.event_id).catch(() => {
         setSignups(beforeDelete);
-        setError(true);
+        setError("An error has occured deleting this event.");
       });
-    }
-  }
-
-  function goToNext() {
-    setP((curr) => curr + 1);
-  }
-
-  function goToPrev() {
-    if (p >= maxP.current) {
-      setP(maxP.current - 1);
-    } else {
-      setP((curr) => Math.max(1, curr - 1));
     }
   }
 
@@ -126,6 +116,7 @@ export default function MySignups() {
           </div>
         ))}
       </div>
+
       <Modal open={open} onClose={closeModal}>
         <div
           style={{
@@ -149,11 +140,8 @@ export default function MySignups() {
           <button onClick={closeModal}>No</button>
         </div>
       </Modal>
-      <button onClick={goToPrev}>previous</button>
-      <button onClick={goToNext}>next</button>
-      {error ? (
-        <p className="error">An error occured deleting this event</p>
-      ) : null}
+
+      {error != "" ? <p className="error">{error}</p> : null}
     </div>
   );
 }
