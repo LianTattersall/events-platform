@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import {
+  deleteSaved,
   getSavedStatus,
   getSavedStatusTicketMaster,
   postSaved,
   postSavedTicketMaster,
+  deleteSavedTm,
 } from "../api";
 import { UserContext } from "../Contexts/UserContext";
-import { Link } from "react-router";
 
 export default function SaveButton({ type, event_id }) {
   const { userId } = useContext(UserContext);
@@ -36,37 +37,76 @@ export default function SaveButton({ type, event_id }) {
 
   function handleSave() {
     setAlreadySaved(true);
-    postSaved(userId, Number(event_id)).catch((err) => {
-      setAlreadySaved(false);
-      setError("An error has occured");
-    });
+    postSaved(userId, Number(event_id))
+      .then(() => {
+        setError("");
+      })
+      .catch((err) => {
+        setAlreadySaved(false);
+        setError("An error has occured");
+      });
   }
 
   function handleTicketMasterSave() {
     setAlreadySaved(true);
-    postSavedTicketMaster(userId, event_id).catch((err) => {
-      setAlreadySaved(false);
-      setError("An error has occured");
-    });
+    postSavedTicketMaster(userId, event_id)
+      .then(() => {
+        setError("");
+      })
+      .catch((err) => {
+        setAlreadySaved(false);
+        setError("An error has occured");
+      });
+  }
+
+  function handleUnsave() {
+    setAlreadySaved(false);
+    deleteSaved(userId, event_id)
+      .then(() => {
+        setError("");
+      })
+      .catch((err) => {
+        setError("An error occured removing this from your saved events list");
+      });
+  }
+
+  function handleUnsaveTM() {
+    setAlreadySaved(false);
+    deleteSavedTm(userId, event_id)
+      .then(() => {
+        setError("");
+      })
+      .catch((err) => {
+        console.log(err);
+        setError("An error occured removing this from your saved events list");
+      });
   }
 
   if (userId == undefined) {
     return null;
   }
 
-  if (error) {
-    return <p className="error">{error}</p>;
-  }
-
   if (!alreadySaved) {
     return (
-      <button
-        onClick={type == "ticketMaster" ? handleTicketMasterSave : handleSave}
-      >
-        Save Event
-      </button>
+      <>
+        <button
+          onClick={type == "ticketMaster" ? handleTicketMasterSave : handleSave}
+        >
+          Save Event
+        </button>
+        {error ? <p className="error">{error}</p> : null}
+      </>
     );
   } else {
-    return <p>Saved!</p>;
+    return (
+      <>
+        <button
+          onClick={type == "ticketMaster" ? handleUnsaveTM : handleUnsave}
+        >
+          Unsave
+        </button>{" "}
+        {error ? <p className="error">{error}</p> : null}
+      </>
+    );
   }
 }
