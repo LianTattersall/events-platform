@@ -59,7 +59,9 @@ export default function Navbar() {
       <Link to={`/savedEvents/${userId}`}>
         <p className="navbar-label">Saved Events</p>
       </Link>
-      <a className="navbar-label">Manage Events</a>
+      <Link to={`/manageEvents`}>
+        <p className="navbar-label">Manage Events</p>
+      </Link>
       <a className="navbar-label">Create Event</a>
       <div style={{ flex: 1 }}></div>
       <LogoutButton />
