@@ -45,7 +45,9 @@ export default function MenuDrawer() {
       <Link to={`/savedEvents/${userId}`}>
         <p className="drawer-label">Saved Events</p>
       </Link>
-      <a className="drawer-label">Manage Events</a>
+      <Link to={`/manageEvents`}>
+        <p className="drawer-label">Manage Events</p>
+      </Link>
       <a className="drawer-label">Create Event</a>
       <LogoutButton />
     </>
