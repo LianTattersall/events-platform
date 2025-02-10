@@ -192,3 +192,48 @@ export const deleteSaved = (user_id, event_id) => {
 export const deleteSavedTm = (user_id, event_id) => {
   return eventsApi.delete(`/externalEvents/${user_id}/${event_id}`);
 };
+
+export const getEventsOrganisedByUser = (organiser_id, type) => {
+  return eventsApi
+    .get(`/events/organiser/${organiser_id}`, { params: { type } })
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const getSignupsForEvent = (event_id, searchTerm) => {
+  return eventsApi
+    .get(`/events/${event_id}/users`, { params: { searchTerm } })
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const patchEvent = (
+  event_id,
+  event_name,
+  description,
+  event_date,
+  start_time,
+  end_time,
+  signup_limit,
+  price,
+  firstline_address,
+  postcode
+) => {
+  return eventsApi
+    .patch(`/events/${event_id}`, {
+      event_name,
+      description,
+      event_date,
+      start_time,
+      end_time,
+      signup_limit,
+      price,
+      firstline_address,
+      postcode,
+    })
+    .then(({ data }) => {
+      return data;
+    });
+};
