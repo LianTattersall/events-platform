@@ -122,7 +122,9 @@ export const deleteSignup = (user_id, event_id) => {
 
 export const getEventsWithQueries = (sortby, orderby, searchTerm, type, p) => {
   return eventsApi
-    .get("/events", { params: { sortby, orderby, searchTerm, type, p } })
+    .get("/events", {
+      params: { sortby, orderby, searchTerm, type, p },
+    })
     .then(({ data }) => {
       return data;
     });
@@ -140,15 +142,16 @@ export const getTicketMasterWithQueries = (
   startDateTime,
   keyword,
   classificationName,
-  marketId
+  marketId,
+  page
 ) => {
   return eventsApi
     .get("/ticketMaster/events.json?size=15&countryCode=gb&sort=date,asc", {
-      params: { startDateTime, keyword, classificationName, marketId },
+      params: { startDateTime, keyword, classificationName, marketId, page },
     })
     .then(({ data }) => {
       if (data.data.page.totalElements == 0) {
-        return [];
+        return { events: [], total: 0 };
       }
       const events = data.data._embedded.events;
       events.forEach((element) => {
@@ -158,6 +161,34 @@ export const getTicketMasterWithQueries = (
         );
       });
 
-      return events;
+      return { events, total: data.data.page.totalElements };
     });
+};
+
+export const getSavedEvents = (user_id) => {
+  return eventsApi.get(`/users/${user_id}/saved`).then(({ data }) => {
+    return data;
+  });
+};
+
+export const getSavedTM = (user_id) => {
+  return eventsApi
+    .get(`/externalEvents/${user_id}`)
+    .then(({ data }) => {
+      const promiseArr = data.events.map((event) =>
+        getTicketMasterById(event.event_id)
+      );
+      return Promise.all(promiseArr);
+    })
+    .then((data) => {
+      return data;
+    });
+};
+
+export const deleteSaved = (user_id, event_id) => {
+  return eventsApi.delete(`/users/${user_id}/saved/${event_id}`);
+};
+
+export const deleteSavedTm = (user_id, event_id) => {
+  return eventsApi.delete(`/externalEvents/${user_id}/${event_id}`);
 };
