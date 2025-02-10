@@ -20,8 +20,12 @@ export default function ExternalEvent() {
         setEvent(data);
       })
       .catch((err) => {
+        if (
+          err.response.data.err.message == "Request failed with status code 404"
+        ) {
+          setError("404 - Page not found");
+        }
         setLoading(false);
-        setError(true);
       });
   }, []);
 
@@ -46,7 +50,7 @@ export default function ExternalEvent() {
           setMenuDrawerOpen(false);
         }}
       >
-        <p>An error has occured</p>
+        <p className="error">{error}</p>
       </div>
     );
   }
