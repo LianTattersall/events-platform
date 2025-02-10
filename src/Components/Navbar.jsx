@@ -56,7 +56,9 @@ export default function Navbar() {
       <Link to={`/signups/${userId}`}>
         <p className="navbar-label">My Signups</p>
       </Link>
-      <a className="navbar-label">Saved Events</a>
+      <Link to={`/savedEvents/${userId}`}>
+        <p className="navbar-label">Saved Events</p>
+      </Link>
       <a className="navbar-label">Manage Events</a>
       <a className="navbar-label">Create Event</a>
       <div style={{ flex: 1 }}></div>
@@ -72,7 +74,9 @@ export default function Navbar() {
       <Link to={`/signups/${userId}`}>
         <p className="navbar-label">My Signups</p>
       </Link>
-      <a className="navbar-label">Saved Events</a>
+      <Link to={`/savedEvents/${userId}`}>
+        <p className="navbar-label">Saved Events</p>
+      </Link>
       <div style={{ flex: 1 }}></div>
       <LogoutButton />
     </>
