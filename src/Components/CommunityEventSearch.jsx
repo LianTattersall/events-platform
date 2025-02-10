@@ -6,48 +6,54 @@ import Pagination from "./Pagination";
 export default function CommunityEventSearch() {
   const [events, setEvents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchTermInput, setSearchTermInput] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [type, setType] = useState("current");
-  const [p, setP] = useState(1);
   const [orderby, setOrderby] = useState("asc");
   const [sortby, setSortby] = useState("date");
-  const maxP = useRef(null);
+  const page = useRef(1);
+  const totalRef = useRef(0);
 
   useEffect(() => {
-    getEventsWithQueries(sortby, orderby, searchTerm, type, p).then(
-      ({ events }) => {
+    setLoading(true);
+    getEventsWithQueries(sortby, orderby, searchTerm, type, 1).then(
+      ({ events, total }) => {
+        totalRef.current = total;
+        page.current = 1;
         setLoading(false);
-        if (events.length == 0 && maxP.current == null) {
-          maxP.current = Math.max(1, p - 1);
-        } else if (events.length != 0) {
-          setEvents(events);
-        }
+        setEvents(events);
       }
     );
-  }, [p, sortby, orderby, type]);
+  }, [sortby, orderby, type, searchTerm]);
 
   function handleEnter(e) {
     if (e.key == "Enter") {
-      setLoading(true);
-      getEventsWithQueries(sortby, orderby, searchTerm, type).then(
-        ({ events }) => {
-          setEvents(events);
-          setLoading(false);
-        }
-      );
+      setSearchTerm(searchTermInput);
     }
   }
 
   function searchHandler() {
-    setLoading(true);
-    getEventsWithQueries(sortby, orderby, searchTerm).then(({ events }) => {
-      setEvents(events);
-      setLoading(false);
-    });
+    setSearchTerm(searchTermInput);
   }
 
+  function handleLoadMore() {
+    page.current += 1;
+    setLoadingMore(true);
+    getEventsWithQueries(sortby, orderby, searchTerm, type, page.current).then(
+      ({ events }) => {
+        setLoadingMore(false);
+        setEvents((curr) => [...curr, ...events]);
+      }
+    );
+  }
+  const loadMoreButton =
+    totalRef.current > events.length ? (
+      <button onClick={handleLoadMore}>Load More</button>
+    ) : null;
+
   return (
-    <div style={{ width: "100%" }}>
+    <>
       <input
         type="text"
         style={{
@@ -60,9 +66,9 @@ export default function CommunityEventSearch() {
         }}
         placeholder={"Search for events"}
         onChange={(e) => {
-          setSearchTerm(e.target.value);
+          setSearchTermInput(e.target.value);
         }}
-        value={searchTerm}
+        value={searchTermInput}
         onKeyDown={handleEnter}
       />
 
@@ -111,7 +117,7 @@ export default function CommunityEventSearch() {
         <p>No events match this search. Sorry!</p>
       ) : null}
       {loading ? <p>Loading events ...</p> : <DisplayEvents events={events} />}
-      <Pagination p={p} maxP={maxP} setP={setP} />
-    </div>
+      {loadingMore ? <p>Loading More events...</p> : loadMoreButton}
+    </>
   );
 }
