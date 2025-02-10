@@ -23,8 +23,11 @@ export default function EventPage() {
       })
       .catch((err) => {
         setLoading(false);
+
         if (err.response.status == 404) {
           setError("404 - Page not found");
+        } else if (err.response.status == 400) {
+          setError("400 - Invalid data type for event ID");
         }
       });
   }, []);
@@ -78,7 +81,14 @@ export default function EventPage() {
         date={event.event_date}
         dateTime={event.event_date + "T" + event.start_time + "Z"}
       />
-      <SignUpButton event_id={Number(event_id)} />
+      {new Date().getTime() < new Date(event.event_date).getTime() ? (
+        <SignUpButton
+          event_id={Number(event_id)}
+          event_name={event.event_name}
+        />
+      ) : (
+        <p>Event has expired!</p>
+      )}
       <SaveButton event_id={event_id} />
     </div>
   );
