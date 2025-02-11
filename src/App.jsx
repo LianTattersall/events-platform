@@ -16,10 +16,9 @@ import BrowseEventsTM from "./Pages/BrowseEventsTM";
 import SavedEvents from "./Pages/SavedEvents";
 import ManageEvents from "./Pages/ManageEvents";
 import ManageEventDetails from "./Pages/ManageEventDetails";
+import CreateEvent from "./Pages/CreateEvent";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <UserContextProvider>
       <MenuDrawerProvider>
@@ -40,6 +39,7 @@ function App() {
             path="/manageEvents/details/:event_id"
             element={<ManageEventDetails />}
           />
+          <Route path="/createEvent" element={<CreateEvent />} />
         </Routes>
       </MenuDrawerProvider>
     </UserContextProvider>
