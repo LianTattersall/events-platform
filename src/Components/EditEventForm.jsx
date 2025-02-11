@@ -5,17 +5,10 @@ import ImagePicker from "./ImagePicker";
 import EventField from "./EventField";
 
 export default function EditEventForm({ setEdit, event, setEvent }) {
-  const [imageURL, setImageURL] = useState(event.image_URL);
-  const [eventNameInput, setEventNameInput] = useState(event.event_name);
-  const [descriptionInput, setDescriptionInput] = useState(event.description);
-  const [dateInput, setDateInput] = useState(event.event_date);
-  const [startInput, setStartInput] = useState(event.start_time);
-  const [endInput, setEndInput] = useState(event.end_time);
-  const [noLimit, setNoLimit] = useState(false);
-  const [priceInput, setPriceInput] = useState(event.price);
+  const [formData, setFormData] = useState(event);
+
   const [signupLimitInput, setSignupLimitInput] = useState(event.signup_limit);
-  const [addressInput, setAdrressInput] = useState(event.firstline_address);
-  const [postcodeInput, setPostcodeInput] = useState(event.postcode);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -36,40 +29,39 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
 
   function updateEvent() {
     setLoading(true);
-    patchEvent(
-      event.event_id,
-      imageURL,
-      eventNameInput,
-      descriptionInput,
-      dateInput,
-      startInput,
-      endInput,
-      signupLimitInput,
-      priceInput,
-      addressInput,
-      postcodeInput
-    ).then(({ event }) => {
-      setLoading(false);
-      setEdit(false);
-      setEvent(event);
-    });
+    patchEvent(formData)
+      .then(({ event }) => {
+        setLoading(false);
+        setEdit(false);
+        setEvent(event);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
     <>
       <form>
         <img
-          src={imageURL}
+          src={formData.image_URL}
           alt={event.image_description}
           style={{ height: "200px" }}
         />
-        <ImagePicker event_id={event.event_id} setImageURL={setImageURL} />
+        <ImagePicker setFormData={setFormData} />
+        <EventField
+          label={"Image description for screen readers: "}
+          id={"image_description"}
+          type={"text"}
+          setFormData={setFormData}
+          value={formData.image_description}
+        />
         <EventField
           label={"Event Name: "}
           type={"text"}
-          id={"event-name"}
-          setter={setEventNameInput}
-          value={eventNameInput}
+          id={"event_name"}
+          setFormData={setFormData}
+          value={formData.event_name}
         />
         <div>
           <label htmlFor="description">Description: </label>
@@ -77,71 +69,79 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
             id="description"
             style={{ height: "80px", width: "200px" }}
             onChange={(e) => {
-              setDescriptionInput(e.target.value);
+              setFormData({ ...formData, description: e.target.value });
             }}
-            value={descriptionInput}
+            value={formData.description}
           />
         </div>
         <EventField
           type={"date"}
-          id={"event-date"}
+          id={"event_date"}
           label={"Event Date: "}
-          setter={setDateInput}
-          value={dateInput}
+          setFormData={setFormData}
+          value={formData.event_date}
         />
         <EventField
           label={"Start Time: "}
-          id={"start-time"}
+          id={"start_time"}
           type={"time"}
-          setter={setStartInput}
-          value={startInput}
+          setFormData={setFormData}
+          value={formData.start_time}
         />
         <EventField
-          id={"end-time"}
+          id={"end_time"}
           label={"End Time: "}
           type={"time"}
-          setter={setEndInput}
-          value={endInput}
+          setFormData={setFormData}
+          value={formData.end_time}
         />
         <div>
           <label htmlFor="signup-limit">Signup Limit: </label>
           <input
             type="number"
-            id="signup-limit"
+            id="signup_limit"
             onChange={(e) => {
               setSignupLimitInput(e.target.value);
+              setFormData({ ...formData, signup_limit: e.target.value });
             }}
-            value={signupLimitInput}
+            value={formData.signup_limit}
           />
           <label htmlFor="unlimited-signups">No limit</label>
           <input
             type="checkbox"
             onChange={(e) => {
-              setNoLimit(e.target.checked);
+              if (e.target.checked) {
+                setFormData({
+                  ...formData,
+                  signup_limit: null,
+                });
+              } else {
+                setFormData({ ...formData, signup_limit: signupLimitInput });
+              }
             }}
-            value={noLimit}
+            checked={formData.signup_limit == null}
           />
         </div>
         <EventField
           type={"number"}
           id={"price"}
           label={"Price: "}
-          setter={setPriceInput}
-          value={priceInput}
+          setFormData={setFormData}
+          value={formData.price}
         />
         <EventField
           type={"text"}
-          id={"address"}
+          id={"firstline_address"}
           label={"Firstline Address: "}
-          setter={setAdrressInput}
-          value={addressInput}
+          setFormData={setFormData}
+          value={formData.firstline_address}
         />
         <EventField
           type={"text"}
           id={"postcode"}
           label={"Postcode: "}
-          setter={setPostcodeInput}
-          value={postcodeInput}
+          setFormData={setFormData}
+          value={formData.postcode}
         />
         <button onClick={handlePublish}>Publish Changes</button>
         <button onClick={handleDiscard}>Discard Changes</button>
