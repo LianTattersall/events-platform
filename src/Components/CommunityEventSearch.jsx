@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { getEventsWithQueries } from "../api";
 import DisplayEvents from "./DisplayEvents";
-import Pagination from "./Pagination";
 
 export default function CommunityEventSearch() {
   const [events, setEvents] = useState([]);
@@ -77,8 +76,6 @@ export default function CommunityEventSearch() {
         id="type"
         onChange={(e) => {
           setType(e.target.value);
-          setP(1);
-          maxP.current = null;
         }}
         value={type}
       >
