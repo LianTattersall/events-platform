@@ -209,33 +209,18 @@ export const getSignupsForEvent = (event_id, searchTerm) => {
     });
 };
 
-export const patchEvent = (
-  event_id,
-  image_URL,
-  event_name,
-  description,
-  event_date,
-  start_time,
-  end_time,
-  signup_limit,
-  price,
-  firstline_address,
-  postcode
-) => {
+export const patchEvent = (formData) => {
+  const patchInfo = { ...formData };
+
   return eventsApi
-    .patch(`/events/${event_id}`, {
-      event_name,
-      image_URL,
-      description,
-      event_date,
-      start_time,
-      end_time,
-      signup_limit,
-      price,
-      firstline_address,
-      postcode,
-    })
+    .patch(`/events/${formData.event_id}`, formData)
     .then(({ data }) => {
       return data;
     });
+};
+
+export const postEvent = (formData) => {
+  return eventsApi.post("/events", formData).then(({ data }) => {
+    return data;
+  });
 };
