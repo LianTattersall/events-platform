@@ -1,8 +1,11 @@
 import { Modal } from "@mui/material";
 import { useState } from "react";
 import { patchEvent } from "../api";
+import ImagePicker from "./ImagePicker";
+import EventField from "./EventField";
 
 export default function EditEventForm({ setEdit, event, setEvent }) {
+  const [imageURL, setImageURL] = useState(event.image_URL);
   const [eventNameInput, setEventNameInput] = useState(event.event_name);
   const [descriptionInput, setDescriptionInput] = useState(event.description);
   const [dateInput, setDateInput] = useState(event.event_date);
@@ -12,7 +15,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
   const [priceInput, setPriceInput] = useState(event.price);
   const [signupLimitInput, setSignupLimitInput] = useState(event.signup_limit);
   const [addressInput, setAdrressInput] = useState(event.firstline_address);
-  const [poscodeInput, setPostcodeInput] = useState(event.postcode);
+  const [postcodeInput, setPostcodeInput] = useState(event.postcode);
   const [modalOpen, setModalOpen] = useState(false);
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,6 +38,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
     setLoading(true);
     patchEvent(
       event.event_id,
+      imageURL,
       eventNameInput,
       descriptionInput,
       dateInput,
@@ -43,9 +47,8 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
       signupLimitInput,
       priceInput,
       addressInput,
-      poscodeInput
+      postcodeInput
     ).then(({ event }) => {
-      console.log("here");
       setLoading(false);
       setEdit(false);
       setEvent(event);
@@ -55,17 +58,19 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
   return (
     <>
       <form>
-        <div>
-          <label htmlFor="event-name">Event Name: </label>
-          <input
-            type="text"
-            id="event-name"
-            onChange={(e) => {
-              setEventNameInput(e.target.value);
-            }}
-            value={eventNameInput}
-          />
-        </div>
+        <img
+          src={imageURL}
+          alt={event.image_description}
+          style={{ height: "200px" }}
+        />
+        <ImagePicker event_id={event.event_id} setImageURL={setImageURL} />
+        <EventField
+          label={"Event Name: "}
+          type={"text"}
+          id={"event-name"}
+          setter={setEventNameInput}
+          value={eventNameInput}
+        />
         <div>
           <label htmlFor="description">Description: </label>
           <textarea
@@ -77,39 +82,27 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
             value={descriptionInput}
           />
         </div>
-        <div>
-          <label htmlFor="date">Event Date: </label>
-          <input
-            type="date"
-            id="date"
-            onChange={(e) => {
-              setDateInput(e.target.value);
-            }}
-            value={dateInput}
-          />
-        </div>
-        <div>
-          <label htmlFor="start-time">Start Time: </label>
-          <input
-            type="time"
-            id="start-time"
-            onChange={(e) => {
-              setStartInput(e.target.value);
-            }}
-            value={startInput}
-          />
-        </div>
-        <div>
-          <label htmlFor="end-time">End Time: </label>
-          <input
-            type="time"
-            id="end-time"
-            onChange={(e) => {
-              setEndInput(e.target.value);
-            }}
-            value={endInput}
-          />
-        </div>
+        <EventField
+          type={"date"}
+          id={"event-date"}
+          label={"Event Date: "}
+          setter={setDateInput}
+          value={dateInput}
+        />
+        <EventField
+          label={"Start Time: "}
+          id={"start-time"}
+          type={"time"}
+          setter={setStartInput}
+          value={startInput}
+        />
+        <EventField
+          id={"end-time"}
+          label={"End Time: "}
+          type={"time"}
+          setter={setEndInput}
+          value={endInput}
+        />
         <div>
           <label htmlFor="signup-limit">Signup Limit: </label>
           <input
@@ -129,39 +122,27 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
             value={noLimit}
           />
         </div>
-        <div>
-          <label htmlFor="price">Price: </label>
-          <input
-            type="number"
-            id="price"
-            onChange={(e) => {
-              setPriceInput(e.target.value);
-            }}
-            value={priceInput}
-          />
-        </div>
-        <div>
-          <label htmlFor="firstline-address">firstline address: </label>
-          <input
-            type="text"
-            id="firstline-address"
-            onChange={(e) => {
-              setAdrressInput(e.target.checked);
-            }}
-            value={addressInput}
-          />
-        </div>
-        <div>
-          <label htmlFor="postcode">postcode: </label>
-          <input
-            type="text"
-            id="poscode"
-            onChange={(e) => {
-              setPostcodeInput(e.target.checked);
-            }}
-            value={poscodeInput}
-          />
-        </div>
+        <EventField
+          type={"number"}
+          id={"price"}
+          label={"Price: "}
+          setter={setPriceInput}
+          value={priceInput}
+        />
+        <EventField
+          type={"text"}
+          id={"address"}
+          label={"Firstline Address: "}
+          setter={setAdrressInput}
+          value={addressInput}
+        />
+        <EventField
+          type={"text"}
+          id={"postcode"}
+          label={"Postcode: "}
+          setter={setPostcodeInput}
+          value={postcodeInput}
+        />
         <button onClick={handlePublish}>Publish Changes</button>
         <button onClick={handleDiscard}>Discard Changes</button>
       </form>
