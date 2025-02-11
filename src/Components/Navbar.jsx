@@ -35,14 +35,14 @@ export default function Navbar() {
 
   const notLoggedIn = (
     <>
-      <Link to={`/browseEvents`}>
-        <p className="navbar-label">Browse Events</p>
+      <Link to="/browseEvents" className="navbar-label">
+        Browse Events
       </Link>
       <div style={{ flex: 1 }}></div>
-      <Link className="navbar-label" to="/login">
+      <Link to="/login" className="navbar-label">
         Login
       </Link>
-      <Link className="navbar-label" to="/signup">
+      <Link to="/signup" className="navbar-label">
         Sign up
       </Link>
     </>
@@ -50,37 +50,41 @@ export default function Navbar() {
 
   const loggedInAdmin = (
     <>
-      <Link to={`/browseEvents`}>
-        <p className="navbar-label">Browse Events</p>
+      <Link to={`/browseEvents`} className="navbar-label">
+        Browse Events
       </Link>
-      <Link to={`/signups/${userId}`}>
-        <p className="navbar-label">My Signups</p>
+      <Link to={`/signups/${userId}`} className="navbar-label">
+        My Signups
       </Link>
-      <Link to={`/savedEvents/${userId}`}>
-        <p className="navbar-label">Saved Events</p>
+      <Link to={`/savedEvents/${userId}`} className="navbar-label">
+        Saved Events
       </Link>
-      <Link to={`/manageEvents`}>
-        <p className="navbar-label">Manage Events</p>
+      <Link to={`/manageEvents`} className="navbar-label">
+        Manage Events
       </Link>
-      <a className="navbar-label">Create Event</a>
+      <Link to={`/createEvent`} className="navbar-label">
+        Create Event
+      </Link>
       <div style={{ flex: 1 }}></div>
       <LogoutButton />
+      <div style={{ width: "15px" }}></div>
     </>
   );
 
   const loggedIn = (
     <>
-      <Link to={`/browseEvents`}>
-        <p className="navbar-label">Browse Events</p>
+      <Link to={`/browseEvents`} className="navbar-label">
+        Browse Events
       </Link>
-      <Link to={`/signups/${userId}`}>
-        <p className="navbar-label">My Signups</p>
+      <Link to={`/signups/${userId}`} className="navbar-label">
+        My Signups
       </Link>
-      <Link to={`/savedEvents/${userId}`}>
-        <p className="navbar-label">Saved Events</p>
+      <Link to={`/savedEvents/${userId}`} className="navbar-label">
+        Saved Events
       </Link>
       <div style={{ flex: 1 }}></div>
       <LogoutButton />
+      <div style={{ width: "15px" }}></div>
     </>
   );
 
@@ -89,17 +93,17 @@ export default function Navbar() {
     return (
       <nav className="navbar">
         <Link className="navbar-label" to="/">
-          EventOganiser
+          EventOrganiser
         </Link>
         {notLoggedIn}
       </nav>
     );
-  } else if (width > 800 && userStatus == "admin") {
+  } else if (width > 900 && userStatus == "admin") {
     setMenuDrawerOpen(false);
     return (
       <nav className="navbar">
-        <Link className="navbar-label" to="/">
-          EventOganiser
+        <Link className="logo" to="/">
+          EventOrganiser
         </Link>
         {loggedInAdmin}
       </nav>
@@ -108,8 +112,8 @@ export default function Navbar() {
     setMenuDrawerOpen(false);
     return (
       <nav className="navbar">
-        <Link className="navbar-label" to="/">
-          EventOganiser
+        <Link className="logo" to="/">
+          EventOrganiser
         </Link>
         {loggedIn}
       </nav>
@@ -117,8 +121,8 @@ export default function Navbar() {
   } else {
     return (
       <nav className="navbar">
-        <Link className="navbar-label" to="/">
-          EventOganiser
+        <Link className="logo" to="/">
+          EventOrganiser
         </Link>
         <div style={{ flex: 1 }}></div>
         <button className="button-no-display" onClick={openCloseDraw}>

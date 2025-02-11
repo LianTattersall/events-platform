@@ -22,13 +22,13 @@ export default function MenuDrawer() {
 
   const notLoggedIn = (
     <>
-      <Link to="/browseEvents">
-        <p className="drawer-label">Browse Events</p>
+      <Link to="/browseEvents" className="drawer-label">
+        Browse Events
       </Link>
-      <Link className="drawer-label" to="/login">
+      <Link to="/login" className="drawer-label">
         Login
       </Link>
-      <Link className="drawer-label" to="/signup">
+      <Link to="/signup" className="drawer-label">
         Sign up
       </Link>
     </>
@@ -36,33 +36,35 @@ export default function MenuDrawer() {
 
   const loggedInAdmin = (
     <>
-      <Link to="/browseEvents">
-        <p className="drawer-label">Browse Events</p>
+      <Link to="/browseEvents" className="drawer-label">
+        Browse Events
       </Link>
-      <Link to={`/signups/${userId}`}>
-        <p className="drawer-label">My Signups</p>
+      <Link to={`/signups/${userId}`} className="drawer-label">
+        My Signups
       </Link>
-      <Link to={`/savedEvents/${userId}`}>
-        <p className="drawer-label">Saved Events</p>
+      <Link to={`/savedEvents/${userId}`} className="drawer-label">
+        Saved Events
       </Link>
-      <Link to={`/manageEvents`}>
-        <p className="drawer-label">Manage Events</p>
+      <Link to={`/manageEvents`} className="drawer-label">
+        Manage Events
       </Link>
-      <a className="drawer-label">Create Event</a>
+      <Link to={`/createEvent`} className="drawer-label">
+        Create Event
+      </Link>
       <LogoutButton />
     </>
   );
 
   const loggedIn = (
     <>
-      <Link to="/browseEvents">
-        <p className="drawer-label">Browse Events</p>
+      <Link to="/browseEvents" className="drawer-label">
+        Browse Events
       </Link>
-      <Link to={`/signups/${userId}`}>
-        <p className="drawer-label">My Signups</p>
+      <Link to={`/signups/${userId}`} className="drawer-label">
+        My Signups
       </Link>
-      <Link to={`/savedEvents/${userId}`}>
-        <p className="drawer-label">Saved Events</p>
+      <Link to={`/savedEvents/${userId}`} className="drawer-label">
+        Saved Events
       </Link>
       <LogoutButton />
     </>
