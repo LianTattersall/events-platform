@@ -20,8 +20,8 @@ export default function LogoutButton() {
     navigate("/");
   }
   return (
-    <button onClick={handleLogout} className="button-no-display">
-      <p className="navbar-label">Logout</p>
+    <button onClick={handleLogout} className="button-no-display drawer-label">
+      <p style={{ margin: "0px" }}>Logout</p>
     </button>
   );
 }
