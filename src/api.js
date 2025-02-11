@@ -211,6 +211,7 @@ export const getSignupsForEvent = (event_id, searchTerm) => {
 
 export const patchEvent = (
   event_id,
+  image_URL,
   event_name,
   description,
   event_date,
@@ -224,6 +225,7 @@ export const patchEvent = (
   return eventsApi
     .patch(`/events/${event_id}`, {
       event_name,
+      image_URL,
       description,
       event_date,
       start_time,
