@@ -1,6 +1,10 @@
+* {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
 .navbar {
   height: 50px;
-  border-bottom: 1px solid #3b3a30;
+  border-bottom: 2px solid rgb(8, 139, 143);
   display: flex;
   justify-content: start;
   align-items: center;
@@ -14,11 +18,19 @@
 .navbar-label {
   margin-left: 15px;
   margin-right: 15px;
+  text-decoration: none;
+  color: black;
+  border-bottom: 2px solid white;
+}
+
+.navbar-label:hover {
+  border-bottom: 2px solid black;
 }
 
 .margin-no-drawer {
-  margin-top: 51px;
-  transition-property: margin;
+  padding-top: 51px;
+  box-sizing: border-box;
+  transition-property: padding;
   transition-duration: 400ms;
   position: absolute;
   height: 100%;
@@ -26,8 +38,9 @@
 }
 
 .margin-with-drawer {
-  margin-top: 301px;
-  transition-property: margin;
+  padding-top: 301px;
+  box-sizing: border-box;
+  transition-property: padding;
   transition-duration: 400ms;
   position: absolute;
   height: 100%;
@@ -35,10 +48,7 @@
 }
 
 .button-no-display {
-  margin: 0px;
-  padding: 0px;
-  border: 0px;
-  background-color: transparent;
+  all: initial;
   cursor: pointer;
 }
 
@@ -55,7 +65,7 @@
 }
 
 .drawer {
-  border-bottom: 1px solid #3b3a30;
+  border-bottom: 2px solid rgb(8, 139, 143);
   height: 250px;
   width: 100%;
   position: fixed;
@@ -68,8 +78,14 @@
 }
 
 .drawer-label {
-  border-bottom: 1px solid #3b3a30;
+  border-bottom: 2px solid white;
   margin: 0px;
+  text-decoration: none;
+  color: black;
+}
+
+.drawer-label:hover {
+  border-bottom: 2px solid black;
 }
 
 .form {
@@ -115,4 +131,14 @@
 .signup-container {
   width: 200px;
   height: 400px;
+}
+
+.logo {
+  font-size: 24.5px;
+  font-weight: 500;
+  color: rgb(8, 139, 143);
+  margin-left: 15px;
+  margin-right: 15px;
+  text-decoration: none;
+  border-bottom: 2px solid white;
 }
