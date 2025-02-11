@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 
-export default function ImagePicker({ event_id, setImageURL }) {
+export default function ImagePicker({ setFormData }) {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState(null);
   function handleImageUpload(e) {
@@ -15,8 +15,8 @@ export default function ImagePicker({ event_id, setImageURL }) {
     setStatus("loading");
     const formatData = new FormData();
     formatData.append("file", file);
-    formatData.append("upload_preset", "eventPlatformPreset");
-    formatData.append("cloud_name", "dacjk1jw1");
+    formatData.append("upload_preset", import.meta.env.VITE_PRESET);
+    formatData.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
 
     axios
       .post(
@@ -25,10 +25,11 @@ export default function ImagePicker({ event_id, setImageURL }) {
       )
       .then((response) => {
         setStatus("success");
-        setImageURL(response.data.url);
+        setFormData((curr) => {
+          return { ...curr, image_URL: response.data.url };
+        });
       })
       .catch((err) => {
-        console.log(err);
         setStatus("error");
       });
   }
