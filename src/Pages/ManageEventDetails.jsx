@@ -13,6 +13,7 @@ export default function ManageEventDetails() {
   const [attendees, setAttendees] = useState([]);
   const [event, setEvent] = useState({});
   const [edit, setEdit] = useState(false);
+  const [loadnig, setLoading] = useState(true);
   const totalRef = useRef(null);
 
   useEffect(() => {
@@ -25,6 +26,7 @@ export default function ManageEventDetails() {
         return getEventById(event_id);
       })
       .then(({ event }) => {
+        setLoading(false);
         setEvent(event);
       });
   }, [searchTerm]);
@@ -35,8 +37,27 @@ export default function ManageEventDetails() {
     }
   }
 
+  if (loadnig) {
+    return (
+      <div
+        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
+        onClick={() => {
+          setMenuDrawerOpen(false);
+        }}
+      >
+        <p>Loading details...</p>
+      </div>
+    );
+  }
+
   const details = (
     <>
+      <img
+        src={event.image_URL}
+        alt={event.image_description}
+        style={{ height: "200px" }}
+      />
+      <p>Image Description: {event.image_description}</p>
       <p>Event Name: {event.event_name}</p>
       <p>Description: {event.description}</p>
       <p>Event Date: {event.event_date}</p>
@@ -101,11 +122,7 @@ export default function ManageEventDetails() {
           </tr>
         </tbody>
       </table>
-      <img
-        src={event.image_URL}
-        alt={event.image_description}
-        style={{ height: "200px" }}
-      />
+
       {edit ? (
         <EditEventForm setEdit={setEdit} event={event} setEvent={setEvent} />
       ) : (
