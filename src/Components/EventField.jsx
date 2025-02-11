@@ -1,4 +1,4 @@
-export default function EventField({ type, id, setter, value, label }) {
+export default function EventField({ type, id, setFormData, value, label }) {
   return (
     <div>
       <label htmlFor={id}>{label}</label>
@@ -6,7 +6,11 @@ export default function EventField({ type, id, setter, value, label }) {
         type={type}
         id={id}
         onChange={(e) => {
-          setter(e.target.value);
+          setFormData((curr) => {
+            const newFormData = { ...curr };
+            newFormData[id] = e.target.value;
+            return newFormData;
+          });
         }}
         value={value}
       />
