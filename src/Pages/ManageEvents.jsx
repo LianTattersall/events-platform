@@ -52,8 +52,8 @@ export default function ManageEvents() {
           </tr>
         </thead>
         <tbody>
-          {events.map((event) => (
-            <tr>
+          {events.map((event, index) => (
+            <tr key={index}>
               <td>
                 <Link to={`/manageEvents/details/${event.event_id}`}>
                   {event.event_name}
@@ -75,8 +75,8 @@ export default function ManageEvents() {
           </tr>
         </thead>
         <tbody>
-          {pastEvents.map((event) => (
-            <tr>
+          {pastEvents.map((event, index) => (
+            <tr key={index}>
               <td>
                 <Link to={`/manageEvents/details/${event.event_id}`}>
                   {event.event_name}
