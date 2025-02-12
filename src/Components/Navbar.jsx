@@ -92,7 +92,7 @@ export default function Navbar() {
     setMenuDrawerOpen(false);
     return (
       <nav className="navbar">
-        <Link className="navbar-label" to="/">
+        <Link className="logo" to="/">
           EventOrganiser
         </Link>
         {notLoggedIn}
