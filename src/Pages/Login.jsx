@@ -13,8 +13,19 @@ export default function Login() {
         setMenuDrawerOpen(false);
       }}
     >
-      <LoginForm />
-      <LoginGoogle />
+      <h1 style={{ textAlign: "center", fontWeight: "450", marginTop: "50px" }}>
+        Login
+      </h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "centre",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <LoginForm />
+      </div>
     </div>
   );
 }
