@@ -3,6 +3,7 @@ import { getUser } from "../api";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useContext, useState } from "react";
+import GoogleIcon from "@mui/icons-material/Google";
 import { UserContext } from "../Contexts/UserContext";
 
 export default function LoginGoogle() {
@@ -28,6 +29,7 @@ export default function LoginGoogle() {
             }
           )
           .then(({ data }) => {
+            console.log("hello");
             return getUser(data.id);
           })
           .then(({ user }) => {
@@ -52,9 +54,13 @@ export default function LoginGoogle() {
   }
 
   return (
-    <>
-      <button onClick={handleLogin()}>Login With google</button>
+    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <button onClick={handleLogin()} className="login-button login-google">
+        <GoogleIcon />
+        <div style={{ width: "10px" }}></div>
+        <p>{"Login With Google"}</p>
+      </button>
       {error != "" ? <p className="error">{error}</p> : null}
-    </>
+    </div>
   );
 }
