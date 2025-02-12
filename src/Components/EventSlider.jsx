@@ -34,8 +34,8 @@ export default function EventSlider({ events, parentWidth }) {
   const labelStyle = {
     color: "white",
     fontSize: "15px",
-    fontWeight: "bold",
     padding: "5px",
+    fontWeight: "200",
     backgroundColor: "black",
     width: "fit-content",
   };
