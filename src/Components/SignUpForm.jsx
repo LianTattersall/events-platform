@@ -66,7 +66,7 @@ export default function SignUpForm() {
 
   return (
     <>
-      <form className="form">
+      <form className="login-signup-form">
         <label htmlFor="name">Name</label>
         <input
           type="text"
@@ -75,6 +75,7 @@ export default function SignUpForm() {
             setNameInput(e.target.value);
           }}
           value={nameInput}
+          className="login-input"
         />
         <label htmlFor="email">Email</label>
         <input
@@ -84,19 +85,9 @@ export default function SignUpForm() {
             setEmail(e.target.value);
           }}
           value={email}
+          className="login-input"
         />
-        <div>
-          <label htmlFor="admin">Staff Member</label>
-          <input
-            type="radio"
-            id="admin"
-            name="admin"
-            checked={adminInput}
-            onChange={() => {
-              setAdminInput(true);
-            }}
-          ></input>
-          <label htmlFor="not-admin">Non Staff Member</label>
+        <div className="admin-container">
           <input
             type="radio"
             id="not-admin"
@@ -106,6 +97,18 @@ export default function SignUpForm() {
               setAdminInput(false);
             }}
           ></input>
+          <label htmlFor="not-admin">Non Staff Member</label>
+          <div style={{ flex: 1 }}></div>
+          <input
+            type="radio"
+            id="admin"
+            name="admin"
+            checked={adminInput}
+            onChange={() => {
+              setAdminInput(true);
+            }}
+          ></input>
+          <label htmlFor="admin">Staff Member</label>
         </div>
         <label htmlFor="password">Enter A password</label>
         <input
@@ -115,6 +118,7 @@ export default function SignUpForm() {
           onChange={(e) => {
             setPassword(e.target.value);
           }}
+          className="login-input"
         />
         <label htmlFor="confirm-password">Confirm password</label>
         <input
@@ -124,9 +128,12 @@ export default function SignUpForm() {
           onChange={(e) => {
             setPasswordConfirm(e.target.value);
           }}
+          className="login-input"
         />
         {error != "" ? <p className="error">{error}</p> : null}
-        <button onClick={createUser}>Create Account</button>
+        <button onClick={createUser} className="login-signup-button">
+          Create Account
+        </button>
       </form>
     </>
   );
