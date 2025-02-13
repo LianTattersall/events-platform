@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { getEventById } from "../api";
 import AddToGoogleCal from "../Components/AddToGoogleCal";
 import SignUpButton from "../Components/SignUpButton";
@@ -14,6 +14,7 @@ export default function EventPage() {
   const [error, setError] = useState("");
 
   const { event_id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getEventById(event_id)
@@ -72,6 +73,8 @@ export default function EventPage() {
       ></img>
       <p>{event.description}</p>
       <p>Date: {event.event_date}</p>
+      <p>Start: {event.start_time}</p>
+      <p>End: {event.end_time}</p>
       <p>Price: {event.price > 0 ? `£${event.price}` : "Free"}</p>
       <p>
         Location: {event.firstline_address} {event.postcode}
@@ -82,10 +85,7 @@ export default function EventPage() {
         dateTime={event.event_date + "T" + event.start_time + "Z"}
       />
       {new Date().getTime() < new Date(event.event_date).getTime() ? (
-        <SignUpButton
-          event_id={Number(event_id)}
-          event_name={event.event_name}
-        />
+        <SignUpButton event_id={event.event_id} />
       ) : (
         <p>Event has expired!</p>
       )}
