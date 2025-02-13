@@ -54,8 +54,11 @@ export default function LoginGoogle() {
   }
 
   return (
-    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-      <button onClick={handleLogin()} className="login-button login-google">
+    <div className="centre-flex-container login-google-container">
+      <button
+        onClick={handleLogin()}
+        className="login-signup-button login-google"
+      >
         <GoogleIcon />
         <div style={{ width: "10px" }}></div>
         <p>{"Login With Google"}</p>
