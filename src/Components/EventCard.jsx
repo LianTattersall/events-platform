@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { dateConverter } from "../utils";
 
 export default function EventCard({ event }) {
   return (
@@ -10,14 +11,16 @@ export default function EventCard({ event }) {
         <div>
           <img
             src={event.image_URL}
-            style={{ height: "200px", width: "100%", objectFit: "cover" }}
+            className="image-event-card"
             alt={event.image_description}
           />
         </div>
-        <p>{event.event_name}</p>
-        <p>Date: {event.event_date}</p>
-        <p>{event.price > 0 ? `£${event.price}` : "Free"}</p>
-        <p>{event.firstline_address}</p>
+        <p className="bold ">{event.event_name}</p>
+        <p className="card-details">{dateConverter(event.event_date)}</p>
+        <p className="card-details">
+          {event.price > 0 ? `£${event.price}` : "Free"}
+        </p>
+        <p className="card-details">{event.firstline_address}</p>
       </div>
     </Link>
   );
