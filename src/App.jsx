@@ -17,6 +17,7 @@ import SavedEvents from "./Pages/SavedEvents";
 import ManageEvents from "./Pages/ManageEvents";
 import ManageEventDetails from "./Pages/ManageEventDetails";
 import CreateEvent from "./Pages/CreateEvent";
+import SignupToEvent from "./Pages/SignupToEvent";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             element={<ManageEventDetails />}
           />
           <Route path="/createEvent" element={<CreateEvent />} />
+          <Route path="/signup/:event_id" element={<SignupToEvent />} />
         </Routes>
       </MenuDrawerProvider>
     </UserContextProvider>
