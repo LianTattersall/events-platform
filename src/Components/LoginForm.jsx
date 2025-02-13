@@ -60,7 +60,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <form className="login-form">
+      <form className="login-signup-form">
         <label htmlFor="email">Email</label>
         <input
           type="text"
@@ -83,7 +83,7 @@ export default function LoginForm() {
           className="login-input"
         />
         {error != "" ? <p className="error">{error}</p> : <p></p>}
-        <button onClick={handleLogin} className="login-button">
+        <button onClick={handleLogin} className="login-signup-button">
           Login
         </button>
         <p style={{ textAlign: "center" }}>OR</p>
