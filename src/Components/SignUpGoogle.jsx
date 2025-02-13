@@ -4,6 +4,7 @@ import { UserContext } from "../Contexts/UserContext";
 import axios from "axios";
 import { postUser } from "../api";
 import { useNavigate } from "react-router";
+import GoogleIcon from "@mui/icons-material/Google";
 
 export default function SignUpGoogle() {
   const navigate = useNavigate();
@@ -59,9 +60,8 @@ export default function SignUpGoogle() {
 
   return (
     <>
-      <form className="form">
-        <div>
-          <label htmlFor="admin">Staff Member</label>
+      <form className="login-signup-form">
+        <div className="admin-container">
           <input
             type="radio"
             name="admin-status"
@@ -71,9 +71,8 @@ export default function SignUpGoogle() {
               setAdminInput(true);
             }}
           />
-        </div>
-        <div>
-          <label htmlFor="admin">Non Staff Member</label>
+          <label htmlFor="admin">Staff Member</label>
+          <div style={{ flex: 1 }}></div>
           <input
             type="radio"
             name="admin-status"
@@ -83,9 +82,19 @@ export default function SignUpGoogle() {
               setAdminInput(false);
             }}
           />
+          <label htmlFor="admin">Non Staff Member</label>
         </div>
       </form>
-      <button onClick={handleGoogleSignIn()}>Sign Up With Google</button>
+      <div className="login-google-container centre-flex-container">
+        <button
+          onClick={handleGoogleSignIn()}
+          className="login-signup-button login-google"
+        >
+          <GoogleIcon />
+          <div style={{ width: "10px" }}></div>
+          <p>Sign Up With Google</p>
+        </button>
+      </div>
       {error != "" ? <p className="error">{error}</p> : null}
     </>
   );
