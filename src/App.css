@@ -123,11 +123,6 @@
   margin: 40px;
 }
 
-.card-container {
-  width: 300px;
-  height: 400px;
-}
-
 .signup-container {
   width: 200px;
   height: 400px;
@@ -156,7 +151,7 @@
   border-radius: 7px;
 }
 
-.login-form {
+.login-signup-form {
   width: 100%;
   max-width: 400px;
   margin-top: 30px;
@@ -164,7 +159,7 @@
   box-sizing: border-box;
 }
 
-.login-button {
+.login-signup-button {
   width: 100%;
   height: 36px;
   border: 0px;
@@ -193,6 +188,52 @@ input:-webkit-autofill:active {
   justify-content: center;
   max-width: 386px;
   width: 100%;
-  margin-left: 7px;
-  margin-right: 7px;
+}
+
+.login-google-container {
+  width: 100%;
+  padding: 7px;
+  box-sizing: border-box;
+  padding-top: "0px";
+}
+
+.centre-flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title-login-signup {
+  text-align: center;
+  font-weight: 450;
+  margin-top: 50px;
+}
+
+.admin-container {
+  margin: 20px;
+  display: flex;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.image-event-card {
+  border-radius: 10px;
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 400px;
+}
+
+.card-details {
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
