@@ -90,6 +90,7 @@ export default function SaveButton({ type, event_id }) {
     return (
       <>
         <button
+          className="buttons"
           onClick={type == "ticketMaster" ? handleTicketMasterSave : handleSave}
         >
           Save Event
@@ -101,6 +102,7 @@ export default function SaveButton({ type, event_id }) {
     return (
       <>
         <button
+          className="buttons"
           onClick={type == "ticketMaster" ? handleUnsaveTM : handleUnsave}
         >
           Unsave
