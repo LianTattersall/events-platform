@@ -23,16 +23,17 @@ export default function SignUpButton({ event_id }) {
   if (userId == undefined) {
     return (
       <Link to="/login">
-        <button>Login to sign up</button>
+        <button className="buttons">Login to sign up</button>
       </Link>
     );
   }
 
   if (signedUpAlready) {
-    return <p>Signed up!</p>;
+    return <p className="inline">Signed up!</p>;
   } else {
     return (
       <button
+        className="buttons"
         onClick={() => {
           navigate(`/signup/${event_id}`);
         }}
