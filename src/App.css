@@ -128,6 +128,22 @@
   height: 400px;
 }
 
+.link-style {
+  all: initial;
+  cursor: pointer;
+}
+
+.mysignup-card {
+  border-radius: 10px;
+  height: 150px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.block {
+  display: block;
+}
+
 .logo {
   font-size: 24.5px;
   font-weight: 500;
@@ -171,7 +187,7 @@
   margin-bottom: 7px;
 }
 
-.login-button:hover {
+.login-signup-button:hover {
   background-color: #b6bdbd;
 }
 
@@ -236,4 +252,60 @@ input:-webkit-autofill:active {
 .card-details {
   margin-top: 3px;
   margin-bottom: 3px;
+}
+
+.flex-start-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.buttons {
+  background-color: #e4ebec;
+  padding: 10px;
+  border: 0px;
+  border-radius: 7px;
+  margin: 5px;
+  margin-left: 0px;
+}
+
+.buttons:hover {
+  background-color: #b6bdbd;
+}
+
+.flex-wrap-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: start;
+  justify-content: center;
+}
+
+.text-centre {
+  text-align: center;
+}
+
+.event-details {
+  width: 100%;
+  max-width: 600px;
+  margin: 15px;
+}
+
+.event-image {
+  border-radius: 25px;
+  width: 100%;
+  max-width: 600px;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.inline {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.link-one-line {
+  display: block;
+  margin-bottom: 16px;
 }
