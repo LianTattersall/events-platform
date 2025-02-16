@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
-import { getEventById, postSignup } from "../api";
+import { getEventById, getUser, postSignup } from "../api";
 import { useNavigate, useParams } from "react-router";
 import { UserContext } from "../Contexts/UserContext";
 import emailjs from "@emailjs/browser";
+import { dateConverter } from "../utils";
 
 export default function SignupToEvent() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -13,21 +14,30 @@ export default function SignupToEvent() {
 
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    getEventById(event_id).then(({ event }) => {
-      setEvent(event);
-      setLoading(false);
-    });
+    getEventById(event_id)
+      .then(({ event }) => {
+        setEvent(event);
+        return getUser(userId);
+      })
+      .then(({ user }) => {
+        setEmail(user.email);
+        setLoading(false);
+      });
   }, []);
 
   function signUserUp() {
     const emailParams = {
-      to_name: "EventOrganiser",
-      message: `This is a confirmation email that you have signed up to ${event.event_name}. The organiser should be in contact with further details. Please contact ${event.organiser_email} if you have any questions.`,
+      to_email: email,
+      to_name: name,
+      message: `This is a confirmation email that you have signed up to ${event.event_name} on the ${event.event_date}, ${event.start_time} at ${event.firstline_address}, ${event.postcode}. The organiser should be in contact with further details. Please contact ${event.organiser_email} if you have any questions.`,
     };
+    setLoading(true);
     postSignup(userId, event_id)
       .then((data) => {
         return emailjs.send(
@@ -39,6 +49,14 @@ export default function SignupToEvent() {
       })
       .then(() => {
         navigate(`/confirmation/${event_id}`);
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err.message == "Request failed with status code 403") {
+          setError("Already signed up!");
+        } else {
+          setError("An error has occured");
+        }
       });
   }
 
@@ -55,19 +73,45 @@ export default function SignupToEvent() {
     );
   }
 
+  if (error != "") {
+    return (
+      <div
+        className={
+          menuDrawerOpen
+            ? "margin-with-drawer flex-start-column"
+            : "margin-no-drawer flex-start-column"
+        }
+        onClick={() => {
+          setMenuDrawerOpen(false);
+        }}
+      >
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
+      className={
+        menuDrawerOpen
+          ? "margin-with-drawer flex-start-column"
+          : "margin-no-drawer flex-start-column"
+      }
       onClick={() => {
         setMenuDrawerOpen(false);
       }}
     >
-      <p>
-        You are signing up to {event.event_name}. By clicking below your name
-        and email will be added to the signup list which the organiser can see.
-        They may contact you via email about further details and payment.
+      <h1>Signing up</h1>
+      <p style={{ margin: "10px" }}>
+        You are signing up to {event.event_name} on the{" "}
+        {dateConverter(event.event_date)}, {event.start_time.slice(0, -3)}. By
+        clicking below your name ({name}) and email ({email}) will be added to
+        the signup list which the organiser can see. They may contact you via
+        email about further details and payment.
       </p>
-      <button onClick={signUserUp}>Confirm</button>
+      <button onClick={signUserUp} className="buttons">
+        Confirm
+      </button>
     </div>
   );
 }
