@@ -4,6 +4,7 @@ import { deleteSignup, getSignups } from "../api";
 import Modal from "@mui/material/Modal";
 import { Link } from "react-router";
 import { UserContext } from "../Contexts/UserContext";
+import { dateConverter } from "../utils";
 
 export default function MySignups() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -90,23 +91,28 @@ export default function MySignups() {
       <div className="flex-wrap-container">
         {signups.map((event, index) => (
           <div className="signup-container" key={index}>
-            <Link
-              style={{ all: "initial", cursor: "pointer" }}
-              to={`/events/${event.event_id}`}
-            >
+            <Link className="link-style" to={`/events/${event.event_id}`}>
               <div>
                 <img
                   src={event.image_URL}
-                  style={{ height: "150px", width: "100%", objectFit: "cover" }}
+                  className="mysignup-card"
                   alt={event.image_description}
                 />
               </div>
-              <p>{event.event_name}</p>
-              <p>Date: {event.event_date}</p>
-              <p>{event.price > 0 ? `£${event.price}` : "Free"}</p>
-              <p>{event.firstline_address}</p>
+
+              <p className="bold">{event.event_name}</p>
+              <p>
+                <span className="bold">Date: </span>
+                {dateConverter(event.event_date)}
+              </p>
+              <p>
+                <span className="bold">Price: </span>
+                {event.price > 0 ? `£${event.price}` : "Free"}
+              </p>
             </Link>
+
             <button
+              className="buttons"
               onClick={() => {
                 handleDeleteClick(event.event_id, event.event_name);
               }}
