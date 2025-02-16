@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { dateConverter } from "../utils";
 
 export default function EventCardSmall({
   event_id,
@@ -31,7 +32,7 @@ export default function EventCardSmall({
         />
       </div>
       <p>{event_name}</p>
-      <p>Date: {event_date}</p>
+      <p>Date: {dateConverter(event_date)}</p>
     </Link>
   );
 }
