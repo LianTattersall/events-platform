@@ -5,6 +5,7 @@ import { getEventById } from "../api";
 import AddToGoogleCal from "../Components/AddToGoogleCal";
 import SignUpButton from "../Components/SignUpButton";
 import SaveButton from "../Components/SaveButton";
+import { dateConverter } from "../utils";
 
 export default function EventPage() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -66,30 +67,44 @@ export default function EventPage() {
         setMenuDrawerOpen(false);
       }}
     >
-      <h1>{event.event_name}</h1>
-      <img
-        src={event.image_URL}
-        style={{ width: "100%", maxWidth: "500px" }}
-      ></img>
-      <p>{event.description}</p>
-      <p>Date: {event.event_date}</p>
-      <p>Start: {event.start_time}</p>
-      <p>End: {event.end_time}</p>
-      <p>Price: {event.price > 0 ? `£${event.price}` : "Free"}</p>
-      <p>
-        Location: {event.firstline_address} {event.postcode}
-      </p>
-      <AddToGoogleCal
-        eventName={event.event_name}
-        date={event.event_date}
-        dateTime={event.event_date + "T" + event.start_time + "Z"}
-      />
-      {new Date().getTime() < new Date(event.event_date).getTime() ? (
-        <SignUpButton event_id={event.event_id} />
-      ) : (
-        <p>Event has expired!</p>
-      )}
-      <SaveButton event_id={event_id} />
+      <h1 className="text-centre">{event.event_name}</h1>
+      <div className="flex-wrap-row">
+        <img
+          src={event.image_URL}
+          className="event-image"
+          alt={event.image_description}
+        ></img>
+        <div className="event-details">
+          <p>{event.description}</p>
+          <p>
+            <span className="bold">Date: </span>
+            {dateConverter(event.event_date)}
+          </p>
+          <p>
+            <span className="bold">Start: </span>
+            {event.start_time}
+          </p>
+          <p>
+            <span className="bold">End: </span>
+            {event.end_time}
+          </p>
+          <p>
+            <span className="bold">Price: </span>
+            {event.price > 0 ? `£${event.price}` : "Free"}
+          </p>
+          <p>
+            <span className="bold">Location: </span>
+            {event.firstline_address} {event.postcode}
+          </p>
+
+          {new Date().getTime() < new Date(event.event_date).getTime() ? (
+            <SignUpButton event_id={event.event_id} />
+          ) : (
+            <p>Event has expired!</p>
+          )}
+          <SaveButton event_id={event_id} />
+        </div>
+      </div>
     </div>
   );
 }
