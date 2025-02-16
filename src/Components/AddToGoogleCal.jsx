@@ -3,15 +3,35 @@ import { UserContext } from "../Contexts/UserContext";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 
-export default function AddToGoogleCal({ eventName, date, dateTime }) {
+export default function AddToGoogleCal({
+  eventName,
+  date,
+  dateTime,
+  eventEnd,
+}) {
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  let dateStart = dateTime ? { dateTime } : { date };
-  const endTime = new Date(dateTime || date);
-  endTime.setHours(endTime.getHours() + 5);
+  function correctForDST(date) {
+    const offset = date.getTimezoneOffset();
+    return new Date(date.getTime() + offset * 60000);
+  }
+
+  let dateStart = dateTime
+    ? { dateTime: correctForDST(new Date(dateTime)).toISOString() }
+    : { date };
+
+  let endTime;
+
+  if (eventEnd) {
+    endTime = correctForDST(new Date(eventEnd));
+  } else {
+    endTime = correctForDST(new Date(dateTime || date));
+    endTime.setHours(endTime.getHours() + 5);
+  }
+
   let dateEnd = dateTime ? { dateTime: endTime.toISOString() } : { date };
 
   const event = {
@@ -38,7 +58,6 @@ export default function AddToGoogleCal({ eventName, date, dateTime }) {
         }
       )
       .then(({ data }) => {
-        console.log(data);
         setSuccess(data.htmlLink);
         setError("");
         setLoading(false);
@@ -92,8 +111,8 @@ export default function AddToGoogleCal({ eventName, date, dateTime }) {
   }
 
   return (
-    <button onClick={() => addToCal(accessToken)}>
-      Add to google calendar
+    <button onClick={() => addToCal(accessToken)} className="buttons">
+      Add to Google Calendar
     </button>
   );
 }
