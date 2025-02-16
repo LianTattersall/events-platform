@@ -4,6 +4,7 @@ import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { getTicketMasterById } from "../api";
 import AddToGoogleCal from "../Components/AddToGoogleCal";
 import SaveButton from "../Components/SaveButton";
+import { dateConverter } from "../utils";
 
 export default function ExternalEvent() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -62,23 +63,33 @@ export default function ExternalEvent() {
         setMenuDrawerOpen(false);
       }}
     >
-      <h1>{event.name}</h1>
-      <img
-        src={event.images.url}
-        alt="An image related to the event"
-        style={{ width: "100%", maxWidth: "500px" }}
-      />
-      <p>{event.dates.start.localDate}</p>
-      <p>{`${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].postalCode}`}</p>
-      <a href={event.url} target="_blank">
-        Book Tickets Here
-      </a>
-      <AddToGoogleCal
-        eventName={event.name}
-        date={event.dates.start.localDate}
-        dateTime={event.dates.start.dateTime}
-      />
-      <SaveButton type="ticketMaster" event_id={event_id} />
+      <h1 className="text-centre">{event.name}</h1>
+      <div className="flex-wrap-row">
+        <img
+          src={event.images.url}
+          alt="An image related to the event"
+          className="event-image"
+        />
+        <div className="event-details">
+          <p>
+            <span className="bold">Date: </span>
+            {dateConverter(event.dates.start.localDate)}
+          </p>
+          <p>
+            <span className="bold">Address: </span>
+            {`${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].postalCode}`}
+          </p>
+          <a href={event.url} target="_blank" className="link-one-line">
+            Book Tickets Here
+          </a>
+          <AddToGoogleCal
+            eventName={event.name}
+            date={event.dates.start.localDate}
+            dateTime={event.dates.start.dateTime}
+          />
+          <SaveButton type="ticketMaster" event_id={event_id} />
+        </div>
+      </div>
     </div>
   );
 }
