@@ -39,8 +39,8 @@ export default function CreateEvent() {
         setMenuDrawerOpen(false);
       }}
     >
-      <p>Create a new event</p>
-      <form>
+      <h1 className="text-centre">Create a new event</h1>
+      <form className="max-width-800">
         <img
           src={formData.image_URL}
           alt={formData.image_description}
@@ -62,15 +62,23 @@ export default function CreateEvent() {
           value={formData.event_name}
         />
         <div>
-          <label htmlFor="description">Description: </label>
-          <textarea
-            id="description"
-            style={{ height: "80px", width: "200px" }}
-            onChange={(e) => {
-              setFormData({ ...formData, description: e.target.value });
-            }}
-            value={formData.description}
-          />
+          <label
+            htmlFor="description"
+            className="bold"
+            style={{ paddingLeft: "5px" }}
+          >
+            Description:
+          </label>
+          <div className="textarea-container">
+            <textarea
+              id="description"
+              className="textarea"
+              onChange={(e) => {
+                setFormData({ ...formData, description: e.target.value });
+              }}
+              value={formData.description}
+            />
+          </div>
         </div>
         <EventField
           type={"date"}
