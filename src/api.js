@@ -1,4 +1,5 @@
 import axios from "axios";
+import { limit } from "firebase/firestore";
 
 const eventsApi = axios.create({
   baseURL: "https://be-event-organiser.lwtcloudflareapitesting.workers.dev",
@@ -56,6 +57,7 @@ export const getTicketMasterById = (event_id) => {
       (highest, img) => (img.width > highest.width ? img : highest),
       event.images[0]
     );
+
     return event;
   });
 };
@@ -100,9 +102,9 @@ export const postSaved = (user_id, event_id) => {
     });
 };
 
-export const getSignups = (user_id, p) => {
+export const getSignups = (user_id, type, offset) => {
   return eventsApi
-    .get(`/users/${user_id}/signups`, { params: { p } })
+    .get(`/users/${user_id}/signups`, { params: { offset, type } })
     .then(({ data }) => {
       return data;
     });
@@ -165,24 +167,29 @@ export const getTicketMasterWithQueries = (
     });
 };
 
-export const getSavedEvents = (user_id) => {
-  return eventsApi.get(`/users/${user_id}/saved`).then(({ data }) => {
-    return data;
-  });
-};
-
-export const getSavedTM = (user_id) => {
+export const getSavedEvents = (user_id, offset) => {
   return eventsApi
-    .get(`/externalEvents/${user_id}`)
+    .get(`/users/${user_id}/saved`, { params: { offset, limit: 5 } })
     .then(({ data }) => {
-      const promiseArr = data.events.map((event) =>
-        getTicketMasterById(event.event_id)
-      );
-      return Promise.all(promiseArr);
-    })
-    .then((data) => {
       return data;
     });
+};
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const getSavedTM = async (user_id, offset) => {
+  const {
+    data: { events, total },
+  } = await eventsApi.get(`/externalEvents/${user_id}`, {
+    params: { offset, limit: 3 },
+  });
+  const savedEvents = [];
+  for (const event of events) {
+    await delay(500);
+    const eventDetails = await getTicketMasterById(event.event_id);
+    savedEvents.push(eventDetails);
+  }
+  return { saved: savedEvents, total };
 };
 
 export const deleteSaved = (user_id, event_id) => {
