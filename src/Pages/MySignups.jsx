@@ -1,61 +1,58 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { deleteSignup, getSignups } from "../api";
-import Modal from "@mui/material/Modal";
-import { Link } from "react-router";
 import { UserContext } from "../Contexts/UserContext";
-import { dateConverter } from "../utils";
+import SignupList from "../Components/SignupList";
 
 export default function MySignups() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
   const { userId } = useContext(UserContext);
 
   const [signups, setSignups] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [eventToDelete, setEventToDelete] = useState({});
+  const [pastSignups, setPastSignups] = useState([]);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState({
+    initial: true,
+    upcoming: false,
+    past: false,
+  });
+
+  const signupTotal = useRef(null);
+  const pastTotal = useRef(null);
 
   useEffect(() => {
-    getSignups(userId)
-      .then(({ signups }) => {
+    getSignups(userId, "curr")
+      .then(({ signups, total }) => {
+        signupTotal.current = total;
+        setSignups(signups);
+        return getSignups(userId, "past");
+      })
+      .then(({ signups, total }) => {
+        pastTotal.current = total;
+        setPastSignups(signups);
         setLoading(false);
-        if (signups.length != 0) {
-          setSignups(signups);
-        } else if (maxP.current == null) {
-          maxP.current = p - 1;
-        }
       })
       .catch(() => {
         setError(true);
+        setLoading((curr) => {
+          return { ...curr, initial: false };
+        });
       });
   }, []);
 
-  function handleDeleteClick(event_id, event_name) {
-    setEventToDelete({ event_id, event_name });
-    setOpen(true);
-  }
-
-  function closeModal() {
-    setEventToDelete({});
-    setOpen(false);
-  }
-
-  function deleteEvent() {
-    if (eventToDelete) {
-      const beforeDelete = JSON.parse(JSON.stringify(signups));
-      setSignups((curr) =>
-        curr.filter((event) => event.event_id != eventToDelete.event_id)
-      );
-      setOpen(false);
-      deleteSignup(userId, eventToDelete.event_id).catch(() => {
-        setSignups(beforeDelete);
-        setError("An error has occured deleting this event.");
+  function LoadMore(type, offset, setter) {
+    setLoading((curr) => {
+      return { ...curr, upcoming: true };
+    });
+    getSignups(userId, type, offset).then(({ signups }) => {
+      setter((curr) => [...curr, ...signups]);
+      setLoading((curr) => {
+        return { ...curr, upcoming: false };
       });
-    }
+    });
   }
 
-  if (loading) {
+  if (loading.initial) {
     return (
       <div
         className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
@@ -88,65 +85,52 @@ export default function MySignups() {
         setMenuDrawerOpen(false);
       }}
     >
-      <div className="flex-wrap-container">
-        {signups.map((event, index) => (
-          <div className="signup-container" key={index}>
-            <Link className="link-style" to={`/events/${event.event_id}`}>
-              <div>
-                <img
-                  src={event.image_URL}
-                  className="mysignup-card"
-                  alt={event.image_description}
-                />
-              </div>
-
-              <p className="bold">{event.event_name}</p>
-              <p>
-                <span className="bold">Date: </span>
-                {dateConverter(event.event_date)}
-              </p>
-              <p>
-                <span className="bold">Price: </span>
-                {event.price > 0 ? `£${event.price}` : "Free"}
-              </p>
-            </Link>
-
-            <button
-              className="buttons"
-              onClick={() => {
-                handleDeleteClick(event.event_id, event.event_name);
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
-
-      <Modal open={open} onClose={closeModal}>
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "90%",
-            maxWidth: 400,
-            height: 200,
-            border: "2px solid #000",
-            backgroundColor: "white",
-          }}
-        >
-          <p>
-            Are you sure you want to delete this event (
-            {eventToDelete.event_name})?
-          </p>
-          <button onClick={deleteEvent}>
-            Yes, remove me from the signup list
+      <h1 className="text-centre">Signups</h1>
+      <h2 className="bold" style={{ paddingLeft: "10px" }}>
+        Upcoming
+      </h2>
+      <SignupList
+        signups={signups}
+        setError={setError}
+        setSignups={setSignups}
+        userId={userId}
+        total={signupTotal}
+      />
+      {loading.upcoming ? <p className="text-centre">Loading more...</p> : null}
+      {signupTotal.current > signups.length && !loading.upcoming ? (
+        <div className="centre-flex-container">
+          <button
+            className="buttons"
+            onClick={() => {
+              LoadMore("curr", signups.length, setSignups);
+            }}
+          >
+            Load More
           </button>
-          <button onClick={closeModal}>No</button>
         </div>
-      </Modal>
+      ) : null}
+
+      <h2 className="bold" style={{ paddingLeft: "10px" }}>
+        Completed
+      </h2>
+      <SignupList
+        signups={pastSignups}
+        setError={setError}
+        setSignups={setPastSignups}
+        userId={userId}
+      />
+      {pastTotal.current > pastSignups.length && !loading.past ? (
+        <div className="centre-flex-container">
+          <button
+            className="buttons"
+            onClick={() => {
+              LoadMore("past", signups.length, setSignups);
+            }}
+          >
+            Load More
+          </button>
+        </div>
+      ) : null}
 
       {error != "" ? <p className="error">{error}</p> : null}
     </div>
