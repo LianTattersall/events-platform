@@ -50,6 +50,7 @@ export default function Confirmation() {
         eventName={event.event_name}
         date={event.event_date}
         dateTime={event.event_date + "T" + event.start_time + "Z"}
+        eventEnd={event.event_date + "T" + event.end_time + "Z"}
       />
     </div>
   );
