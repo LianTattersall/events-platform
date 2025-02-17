@@ -16,23 +16,20 @@ export default function EventCardSmall({
           ? `/events/${event_id}`
           : `/externalEvent/${event_id}`
       }
-      style={{
-        all: "initial",
-        width: "230px",
-        height: "200px",
-        margin: "20px",
-        cursor: "pointer",
-      }}
+      className="small-event-card-container"
     >
-      <div style={{ height: "120px", width: "230px" }}>
+      <div className="small-event-card-img-container">
         <img
           src={image_URL}
           alt={image_description || "a picture related to the event"}
-          style={{ height: "100%", width: "100%", objectFit: "cover" }}
+          className="small-event-card-img"
         />
       </div>
-      <p>{event_name}</p>
-      <p>Date: {dateConverter(event_date)}</p>
+      <p className="bold">{event_name}</p>
+      <p>
+        <span className="bold">Date: </span>
+        {dateConverter(event_date)}
+      </p>
     </Link>
   );
 }
