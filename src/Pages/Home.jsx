@@ -59,7 +59,7 @@ export default function Home() {
           setMenuDrawerOpen(false);
         }}
       >
-        <p>An error has occured</p>
+        <p className="text-centre error">An error has occured</p>
       </div>
     );
   }
