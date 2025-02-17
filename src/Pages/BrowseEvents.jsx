@@ -13,10 +13,16 @@ export default function BrowseEvents() {
         setMenuDrawerOpen(false);
       }}
     >
-      <Link to={"/browseEvents"}>Community events</Link>
-      <p style={{ display: "inline" }}> | </p>
-      <Link to={"/browseEventsTM"}>Ticket Master Events</Link>
+      <h1 className="text-centre">Browse Events</h1>
+      <div className="flex-row-centre">
+        <Link to={"/browseEvents"} className="margin-20px">
+          Community events
+        </Link>
 
+        <Link to={"/browseEventsTM"} className="margin-20px">
+          Ticket Master Events
+        </Link>
+      </div>
       <CommunityEventSearch />
     </div>
   );
