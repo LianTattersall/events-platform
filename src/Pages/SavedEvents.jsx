@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { getSavedEvents, getSavedTM } from "../api";
 import { UserContext } from "../Contexts/UserContext";
@@ -10,22 +10,53 @@ export default function SavedEvents() {
 
   const [events, setEvents] = useState([]);
   const [tM, setTM] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState({ community: true, tm: true });
+  const [loadingMore, setLoadingMore] = useState({
+    community: false,
+    tm: false,
+  });
+  const [error, setError] = useState("");
+
+  const totalRef = useRef(null);
+  const TMTotalRef = useRef(null);
 
   useEffect(() => {
     getSavedEvents(userId)
-      .then(({ saved }) => {
+      .then(({ saved, total }) => {
         setEvents(saved);
+        setLoading({ community: false, tm: true });
+        totalRef.current = total;
         return getSavedTM(userId);
       })
-      .then((data) => {
-        setLoading(false);
-        setTM(data);
+      .then(({ saved, total }) => {
+        setLoading({ community: false, tm: false });
+        TMTotalRef.current = total;
+        setTM(saved);
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading saved events...</p>;
+  function LoadMore(offset, setter) {
+    setLoadingMore((curr) => {
+      return { ...curr, community: true };
+    });
+    getSavedEvents(userId, offset).then(({ saved }) => {
+      setter((curr) => [...curr, ...saved]);
+      setLoadingMore((curr) => {
+        return { ...curr, community: false };
+      });
+    });
+  }
+
+  function LoadMoreTM(offset, setter) {
+    setLoadingMore((curr) => {
+      return { ...curr, tm: true };
+    });
+    getSavedTM(userId, offset).then(({ saved }) => {
+      setter((curr) => [...curr, ...saved]);
+      setLoadingMore((curr) => {
+        return { ...curr, tm: false };
+      });
+    });
   }
 
   return (
@@ -35,7 +66,12 @@ export default function SavedEvents() {
         setMenuDrawerOpen(false);
       }}
     >
-      <p>Community Events</p>
+      {error != "" ? <p className="error text-centre">{error}</p> : null}
+      <h1 className="text-centre">Saved Events</h1>
+      <h2 style={{ paddingLeft: "10px" }}>Community Events</h2>
+      {loading.community ? (
+        <p className="text-centre">Loading events...</p>
+      ) : null}
       <div className="flex-wrap-container">
         {events.map((event, index) => (
           <EventCardSmall
@@ -49,7 +85,23 @@ export default function SavedEvents() {
         ))}
         {events.length == 0 && !loading ? <p>No saved events!</p> : null}
       </div>
-      <p>Ticket Master Events</p>
+      {totalRef.current > events.length && !loadingMore.community ? (
+        <div className="centre-flex-container">
+          <button
+            className="buttons"
+            onClick={() => {
+              LoadMore(events.length, setEvents);
+            }}
+          >
+            Load More
+          </button>
+        </div>
+      ) : null}
+      {loadingMore.community ? (
+        <p className="text-centre">Loading More</p>
+      ) : null}
+      <h2 style={{ paddingLeft: "10px" }}>Ticket Master Events</h2>
+      {loading.tm ? <p className="text-centre">Loading events...</p> : null}
       <div className="flex-wrap-container">
         {tM.map((event, index) => (
           <EventCardSmall
@@ -63,6 +115,19 @@ export default function SavedEvents() {
         ))}
         {tM.length == 0 && !loading ? <p>No saved events!</p> : null}
       </div>
+      {TMTotalRef.current > tM.length && !loadingMore.tm ? (
+        <div className="centre-flex-container">
+          <button
+            className="buttons"
+            onClick={() => {
+              LoadMoreTM(tM.length, setTM);
+            }}
+          >
+            Load More
+          </button>
+        </div>
+      ) : null}
+      {loadingMore.tm ? <p className="text-centre">Loading More</p> : null}
     </div>
   );
 }
