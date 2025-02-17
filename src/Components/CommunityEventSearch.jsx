@@ -48,73 +48,83 @@ export default function CommunityEventSearch() {
   }
   const loadMoreButton =
     totalRef.current > events.length ? (
-      <button onClick={handleLoadMore}>Load More</button>
+      <div className="centre-flex-container">
+        <button onClick={handleLoadMore} className="buttons">
+          Load more
+        </button>
+      </div>
     ) : null;
 
   return (
     <>
-      <input
-        type="text"
-        style={{
-          borderRadius: "25px",
-          width: "70%",
-          margin: "30px",
-          border: "1px black solid",
-          padding: "10px",
-          paddingLeft: "10px",
-        }}
-        placeholder={"Search for events"}
-        onChange={(e) => {
-          setSearchTermInput(e.target.value);
-        }}
-        value={searchTermInput}
-        onKeyDown={handleEnter}
-      />
-
-      <label htmlFor="type">Type of event</label>
-      <select
-        id="type"
-        onChange={(e) => {
-          setType(e.target.value);
-        }}
-        value={type}
-      >
-        <option value="current">Upcoming events</option>
-        <option value="all">All events (past and future)</option>
-      </select>
-
-      <label htmlFor="sortby">Sort by:</label>
-      <select
-        name="sortby"
-        id="sortby"
-        onChange={(e) => {
-          setSortby(e.target.value);
-        }}
-        value={sortby}
-      >
-        <option value="price">price</option>
-        <option value="date">date</option>
-      </select>
-
-      <label htmlFor="orderby">Orderby:</label>
-      <select
-        name="orderby"
-        id="orderby"
-        onChange={(e) => {
-          setOrderby(e.target.value);
-        }}
-        value={orderby}
-      >
-        <option value="asc">ascending</option>
-        <option value="desc">descending</option>
-      </select>
-      <button onClick={searchHandler}>search</button>
+      <section className="search-bar-container">
+        <input
+          type="text"
+          className="search-bar"
+          placeholder={"Search for events"}
+          onChange={(e) => {
+            setSearchTermInput(e.target.value);
+          }}
+          value={searchTermInput}
+          onKeyDown={handleEnter}
+        />
+        <button onClick={searchHandler} className="buttons">
+          search
+        </button>
+      </section>
+      <section className="controls-container">
+        <div className="width-fit-content">
+          <label htmlFor="type">Type of event: </label>
+          <select
+            id="type"
+            onChange={(e) => {
+              setType(e.target.value);
+            }}
+            value={type}
+          >
+            <option value="current">Upcoming events</option>
+            <option value="all">All events (past and future)</option>
+          </select>
+        </div>
+        <div className="width-fit-content">
+          <label htmlFor="sortby">Sort by: </label>
+          <select
+            name="sortby"
+            id="sortby"
+            onChange={(e) => {
+              setSortby(e.target.value);
+            }}
+            value={sortby}
+          >
+            <option value="price">price</option>
+            <option value="date">date</option>
+          </select>
+        </div>
+        <div className="width-fit-content">
+          <label htmlFor="orderby">Orderby: </label>
+          <select
+            name="orderby"
+            id="orderby"
+            onChange={(e) => {
+              setOrderby(e.target.value);
+            }}
+            value={orderby}
+          >
+            <option value="asc">ascending</option>
+            <option value="desc">descending</option>
+          </select>
+        </div>
+      </section>
 
       {events.length == 0 && !loading ? (
         <p>No events match this search. Sorry!</p>
       ) : null}
       {loading ? <p>Loading events ...</p> : <DisplayEvents events={events} />}
-      {loadingMore ? <p>Loading More events...</p> : loadMoreButton}
+      {loadingMore ? (
+        <p className="text-centre">Loading More events...</p>
+      ) : (
+        loadMoreButton
+      )}
     </>
   );
 }
