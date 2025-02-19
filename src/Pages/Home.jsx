@@ -3,6 +3,7 @@ import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import EventSlider from "../Components/EventSlider";
 import { getEvents, getUpcomingTicketMaster } from "../api";
 import DisplayEvents from "../Components/DisplayEvents";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function Home() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -40,27 +41,19 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
-        <p>Loading Event Details...</p>
-      </div>
+      <PageTemplate>
+        <p className="text-centre">Loading Event Details...</p>
+        <div style={{ height: "100%" }}></div>
+      </PageTemplate>
     );
   }
 
   if (error) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
+      <PageTemplate>
         <p className="text-centre error">An error has occured</p>
-      </div>
+        <div style={{ height: "100%" }}></div>
+      </PageTemplate>
     );
   }
 
@@ -76,17 +69,12 @@ export default function Home() {
   }
 
   return (
-    <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
+    <PageTemplate>
       <div style={containerStyles}>
         <EventSlider events={events} parentWidth={width >= 500 ? 500 : width} />
       </div>
       <div style={{ height: "20px" }}></div>
       <DisplayEvents events={displayEvents} />
-    </div>
+    </PageTemplate>
   );
 }
