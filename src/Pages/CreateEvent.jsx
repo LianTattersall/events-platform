@@ -4,11 +4,16 @@ import ImagePicker from "../Components/ImagePicker";
 import EventField from "../Components/EventField";
 import { postEvent } from "../api";
 import { UserContext } from "../Contexts/UserContext";
+import { useNavigate } from "react-router";
 
 export default function CreateEvent() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
   const { userId } = useContext(UserContext);
   const [signupLimitInput, setSignupLimitInput] = useState(0);
+  const [error, setError] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     image_URL:
@@ -27,9 +32,38 @@ export default function CreateEvent() {
 
   function createEvent(e) {
     e.preventDefault();
-    postEvent({ ...formData, organiser_id: userId }).then((data) => {
-      console.log(data);
-    });
+    setError([]);
+    for (const key in formData) {
+      if (formData[key] == "") {
+        setError((curr) => [...curr, key]);
+      }
+    }
+    for (const key in formData) {
+      if (formData[key] == "") {
+        return null;
+      }
+    }
+    setLoading(true);
+    postEvent({ ...formData, organiser_id: userId })
+      .then(({ event }) => {
+        navigate(`/events/${event.event_id}`);
+      })
+      .catch((err) => {
+        setError(["api error"]);
+      });
+  }
+
+  if (loading) {
+    return (
+      <div
+        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
+        onClick={() => {
+          setMenuDrawerOpen(false);
+        }}
+      >
+        <p className="text-centre">Creating Event...</p>
+      </div>
+    );
   }
 
   return (
@@ -41,11 +75,14 @@ export default function CreateEvent() {
     >
       <h1 className="text-centre">Create a new event</h1>
       <form className="max-width-800">
-        <img
-          src={formData.image_URL}
-          alt={formData.image_description}
-          style={{ height: "200px" }}
-        />
+        <div className="centre-flex-container">
+          <img
+            src={formData.image_URL}
+            alt={formData.image_description}
+            style={{ height: "200px", marginBottom: "20px" }}
+          />
+        </div>
+
         <ImagePicker setFormData={setFormData} />
         <EventField
           label={"Image description for screen readers: "}
@@ -53,6 +90,7 @@ export default function CreateEvent() {
           type={"text"}
           setFormData={setFormData}
           value={formData.image_description}
+          error={error.indexOf("image_description") != -1}
         />
         <EventField
           label={"Event Name: "}
@@ -60,6 +98,7 @@ export default function CreateEvent() {
           id={"event_name"}
           setFormData={setFormData}
           value={formData.event_name}
+          error={error.indexOf("event_name") != -1}
         />
         <div>
           <label
@@ -72,7 +111,9 @@ export default function CreateEvent() {
           <div className="textarea-container">
             <textarea
               id="description"
-              className="textarea"
+              className={`textarea ${
+                error.indexOf("description") == -1 ? "" : "red-border"
+              }`}
               onChange={(e) => {
                 setFormData({ ...formData, description: e.target.value });
               }}
@@ -86,6 +127,7 @@ export default function CreateEvent() {
           label={"Event Date: "}
           setFormData={setFormData}
           value={formData.event_date}
+          error={error.indexOf("event_date") != -1}
         />
         <EventField
           label={"Start Time: "}
@@ -93,6 +135,7 @@ export default function CreateEvent() {
           type={"time"}
           setFormData={setFormData}
           value={formData.start_time}
+          error={error.indexOf("start_time") != -1}
         />
         <EventField
           id={"end_time"}
@@ -100,9 +143,16 @@ export default function CreateEvent() {
           type={"time"}
           setFormData={setFormData}
           value={formData.end_time}
+          error={error.indexOf("end_time") != -1}
         />
         <div>
-          <label htmlFor="signup-limit">Signup Limit: </label>
+          <label
+            htmlFor="signup-limit"
+            className="bold"
+            style={{ paddingLeft: "5px" }}
+          >
+            Signup Limit:{" "}
+          </label>
           <input
             type="number"
             id="signup_limit"
@@ -134,6 +184,7 @@ export default function CreateEvent() {
           label={"Price: "}
           setFormData={setFormData}
           value={formData.price}
+          error={error.indexOf("price") != -1}
         />
         <EventField
           type={"text"}
@@ -141,6 +192,7 @@ export default function CreateEvent() {
           label={"Firstline Address: "}
           setFormData={setFormData}
           value={formData.firstline_address}
+          error={error.indexOf("firstline_address") != -1}
         />
         <EventField
           type={"text"}
@@ -148,8 +200,16 @@ export default function CreateEvent() {
           label={"Postcode: "}
           setFormData={setFormData}
           value={formData.postcode}
+          error={error.indexOf("postcode") != -1}
         />
-        <button onClick={createEvent}>Create Event</button>
+        <div className="centre-flex-container">
+          {error[0] == "api error" ? (
+            <p className="error">An error has occured creating your event</p>
+          ) : null}
+          <button onClick={createEvent} className="buttons">
+            Create Event
+          </button>
+        </div>
       </form>
     </div>
   );
