@@ -1,5 +1,4 @@
 import axios from "axios";
-import { limit } from "firebase/firestore";
 
 const eventsApi = axios.create({
   baseURL: "https://be-event-organiser.lwtcloudflareapitesting.workers.dev",
@@ -200,25 +199,23 @@ export const deleteSavedTm = (user_id, event_id) => {
   return eventsApi.delete(`/externalEvents/${user_id}/${event_id}`);
 };
 
-export const getEventsOrganisedByUser = (organiser_id, type) => {
+export const getEventsOrganisedByUser = (organiser_id, type, p) => {
   return eventsApi
-    .get(`/events/organiser/${organiser_id}`, { params: { type } })
+    .get(`/events/organiser/${organiser_id}`, { params: { type, p, limit: 5 } })
     .then(({ data }) => {
       return data;
     });
 };
 
-export const getSignupsForEvent = (event_id, searchTerm) => {
+export const getSignupsForEvent = (event_id, searchTerm, p) => {
   return eventsApi
-    .get(`/events/${event_id}/users`, { params: { searchTerm } })
+    .get(`/events/${event_id}/users`, { params: { searchTerm, limit: 5, p } })
     .then(({ data }) => {
       return data;
     });
 };
 
 export const patchEvent = (formData) => {
-  const patchInfo = { ...formData };
-
   return eventsApi
     .patch(`/events/${formData.event_id}`, formData)
     .then(({ data }) => {
