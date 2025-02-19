@@ -1,13 +1,10 @@
-import { useContext, useEffect, useState } from "react";
-import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
+import { useEffect, useState } from "react";
 import EventSlider from "../Components/EventSlider";
 import { getEvents, getUpcomingTicketMaster } from "../api";
 import DisplayEvents from "../Components/DisplayEvents";
 import PageTemplate from "../Components/PageTemplate";
 
 export default function Home() {
-  const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
-
   const [events, setEvents] = useState([]);
   const [width, setWidth] = useState(window.innerWidth);
   const [loading, setLoading] = useState(true);
@@ -43,7 +40,6 @@ export default function Home() {
     return (
       <PageTemplate>
         <p className="text-centre">Loading Event Details...</p>
-        <div style={{ height: "100%" }}></div>
       </PageTemplate>
     );
   }
@@ -52,7 +48,6 @@ export default function Home() {
     return (
       <PageTemplate>
         <p className="text-centre error">An error has occured</p>
-        <div style={{ height: "100%" }}></div>
       </PageTemplate>
     );
   }

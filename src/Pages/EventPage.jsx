@@ -1,15 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
-import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { getEventById } from "../api";
-import AddToGoogleCal from "../Components/AddToGoogleCal";
 import SignUpButton from "../Components/SignUpButton";
 import SaveButton from "../Components/SaveButton";
 import { dateConverter } from "../utils";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function EventPage() {
-  const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
-
   const [loading, setLoading] = useState(true);
   const [event, setEvent] = useState({});
   const [error, setError] = useState("");
@@ -35,37 +32,22 @@ export default function EventPage() {
 
   if (loading) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
+      <PageTemplate>
         <p className="text-centre">Loading Event details...</p>
-      </div>
+      </PageTemplate>
     );
   }
 
   if (error) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
-        <p className="error">{error}</p>
-      </div>
+      <PageTemplate>
+        <p className="error text-centre">{error}</p>
+      </PageTemplate>
     );
   }
 
   return (
-    <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
+    <PageTemplate>
       <h1 className="text-centre">{event.event_name}</h1>
       <div className="flex-wrap-row">
         <img
@@ -96,14 +78,15 @@ export default function EventPage() {
             {event.firstline_address} {event.postcode}
           </p>
 
-          {new Date().getTime() < new Date(event.event_date).getTime() ? (
+          {new Date().getTime() < new Date(event.event_date).getTime() &&
+          (event.signup_limit == null || event.signup_limit > event.signups) ? (
             <SignUpButton event_id={event.event_id} />
           ) : (
-            <p>Event has expired!</p>
+            <p>Event has expired or reched it's signup limit!</p>
           )}
           <SaveButton event_id={event_id} />
         </div>
       </div>
-    </div>
+    </PageTemplate>
   );
 }

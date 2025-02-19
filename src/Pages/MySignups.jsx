@@ -1,11 +1,10 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
-import { deleteSignup, getSignups } from "../api";
+import { getSignups } from "../api";
 import { UserContext } from "../Contexts/UserContext";
 import SignupList from "../Components/SignupList";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function MySignups() {
-  const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
   const { userId } = useContext(UserContext);
 
   const [signups, setSignups] = useState([]);
@@ -54,37 +53,22 @@ export default function MySignups() {
 
   if (loading.initial) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
+      <PageTemplate>
         <p>Loading signups...</p>
-      </div>
+      </PageTemplate>
     );
   }
 
   if (signups.length == 0) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
+      <PageTemplate>
         <p>No signups yet!</p>
-      </div>
+      </PageTemplate>
     );
   }
 
   return (
-    <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
+    <PageTemplate>
       <h1 className="text-centre">Signups</h1>
       <h2 className="bold" style={{ paddingLeft: "10px" }}>
         Upcoming
@@ -133,6 +117,6 @@ export default function MySignups() {
       ) : null}
 
       {error != "" ? <p className="error">{error}</p> : null}
-    </div>
+    </PageTemplate>
   );
 }

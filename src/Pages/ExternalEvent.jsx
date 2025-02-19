@@ -5,6 +5,7 @@ import { getTicketMasterById } from "../api";
 import AddToGoogleCal from "../Components/AddToGoogleCal";
 import SaveButton from "../Components/SaveButton";
 import { dateConverter } from "../utils";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function ExternalEvent() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -32,37 +33,22 @@ export default function ExternalEvent() {
 
   if (loading) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
+      <PageTemplate>
         <p>Loading Event Details...</p>
-      </div>
+      </PageTemplate>
     );
   }
 
   if (error) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
+      <PageTemplate>
         <p className="error">{error}</p>
-      </div>
+      </PageTemplate>
     );
   }
 
   return (
-    <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
+    <PageTemplate>
       <h1 className="text-centre">{event.name}</h1>
       <div className="flex-wrap-row">
         <img
@@ -90,6 +76,6 @@ export default function ExternalEvent() {
           <SaveButton type="ticketMaster" event_id={event_id} />
         </div>
       </div>
-    </div>
+    </PageTemplate>
   );
 }

@@ -10,8 +10,10 @@ export default function PageTemplate({ children }) {
       onClick={() => {
         setMenuDrawerOpen(false);
       }}
+      style={{ display: "flex", flexDirection: "column" }}
     >
-      {children}
+      <div>{children}</div>
+      <div style={{ flex: 1 }}></div>
       <Footer />
     </div>
   );

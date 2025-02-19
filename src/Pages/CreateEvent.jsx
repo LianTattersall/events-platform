@@ -1,13 +1,12 @@
 import { useContext, useState } from "react";
-import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import ImagePicker from "../Components/ImagePicker";
 import EventField from "../Components/EventField";
 import { postEvent } from "../api";
 import { UserContext } from "../Contexts/UserContext";
 import { useNavigate } from "react-router";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function CreateEvent() {
-  const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
   const { userId } = useContext(UserContext);
   const [signupLimitInput, setSignupLimitInput] = useState(0);
   const [error, setError] = useState([]);
@@ -55,24 +54,14 @@ export default function CreateEvent() {
 
   if (loading) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
+      <PageTemplate>
         <p className="text-centre">Creating Event...</p>
-      </div>
+      </PageTemplate>
     );
   }
 
   return (
-    <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
+    <PageTemplate>
       <h1 className="text-centre">Create a new event</h1>
       <form className="max-width-800">
         <div className="centre-flex-container">
@@ -211,6 +200,6 @@ export default function CreateEvent() {
           </button>
         </div>
       </form>
-    </div>
+    </PageTemplate>
   );
 }

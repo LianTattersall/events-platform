@@ -1,12 +1,11 @@
-import { useContext, useState } from "react";
-import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
+import { useState } from "react";
 import SignUpForm from "../Components/SignUpForm";
 import SignUpGoogle from "../Components/SignUpGoogle";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Link } from "react-router";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function SignUp() {
-  const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
   const [signupMethod, setSignupMethod] = useState("email");
 
   const emailOptions = (
@@ -48,16 +47,11 @@ export default function SignUp() {
   );
 
   return (
-    <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
+    <PageTemplate>
       <h1 className="title-login-signup">Sign Up</h1>
 
       {signupMethod == "email" ? emailOptions : null}
       {signupMethod == "google" ? googleOptions : null}
-    </div>
+    </PageTemplate>
   );
 }

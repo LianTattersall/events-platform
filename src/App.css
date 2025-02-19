@@ -313,7 +313,8 @@ input:-webkit-autofill:active {
 }
 
 .small-event-card-container {
-  all: initial;
+  text-decoration: none;
+  color: black;
   width: 230px;
   height: 200px;
   margin: 20px;
@@ -484,6 +485,16 @@ tbody tr:focus {
 }
 
 .footer-container {
-  background-color: #088b8f;
+  margin-top: 30px;
+  background-color: #004c4f;
   width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+}
+
+.footer-item {
+  color: white;
+  font-size: small;
+  display: inline-block;
 }

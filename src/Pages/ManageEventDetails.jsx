@@ -1,12 +1,11 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
+import { useEffect, useRef, useState } from "react";
 import { getEventById, getSignupsForEvent } from "../api";
 import { useParams } from "react-router";
 import EditEventForm from "../Components/EditEventForm";
 import { init } from "@emailjs/browser";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function ManageEventDetails() {
-  const { setMenuDrawerOpen, menuDrawerOpen } = useContext(MenuDrawerContext);
   const { event_id } = useParams();
 
   const [searchTermInput, setSearchTermInput] = useState("");
@@ -58,14 +57,9 @@ export default function ManageEventDetails() {
 
   if (loadnig.initial) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
+      <PageTemplate>
         <p className="text-centre">Loading details...</p>
-      </div>
+      </PageTemplate>
     );
   }
 
@@ -134,12 +128,7 @@ export default function ManageEventDetails() {
   );
 
   return (
-    <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
+    <PageTemplate>
       <h1 className="text-centre">Event Details</h1>
       <h2 className="text-centre">Attendees</h2>
       <div className="search-users-container">
@@ -199,6 +188,6 @@ export default function ManageEventDetails() {
       ) : (
         details
       )}
-    </div>
+    </PageTemplate>
   );
 }
