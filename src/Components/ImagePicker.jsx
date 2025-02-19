@@ -10,6 +10,13 @@ export default function ImagePicker({ setFormData }) {
     setStatus("not-uploaded");
   }
 
+  function toJPG(imageURL) {
+    if (imageURL.slice(-4, imageURL.length) == "heic") {
+      return imageURL.slice(0, -4) + "jpg";
+    }
+    return imageURL;
+  }
+
   function uploadImage(e) {
     e.preventDefault();
     setStatus("loading");
@@ -26,7 +33,7 @@ export default function ImagePicker({ setFormData }) {
       .then((response) => {
         setStatus("success");
         setFormData((curr) => {
-          return { ...curr, image_URL: response.data.url };
+          return { ...curr, image_URL: toJPG(response.data.url) };
         });
       })
       .catch((err) => {
@@ -36,10 +43,19 @@ export default function ImagePicker({ setFormData }) {
 
   return (
     <div>
-      <label htmlFor="image">Choose a new image: </label>
-      <input type="file" onChange={handleImageUpload} accept="image/*" />
+      <label htmlFor="image" className="bold" style={{ padding: "5px" }}>
+        Choose a new image:{" "}
+      </label>
+      <input
+        type="file"
+        onChange={handleImageUpload}
+        accept="image/*"
+        style={{ paddingLeft: "5px" }}
+      />
       {file && status == "not-uploaded" ? (
-        <button onClick={uploadImage}>Upload</button>
+        <button onClick={uploadImage} className="buttons">
+          Upload
+        </button>
       ) : status == "loading" ? (
         <p>Uploading Image...</p>
       ) : null}
