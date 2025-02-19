@@ -15,7 +15,6 @@ export default function EventPage() {
   const [error, setError] = useState("");
 
   const { event_id } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     getEventById(event_id)
@@ -42,7 +41,7 @@ export default function EventPage() {
           setMenuDrawerOpen(false);
         }}
       >
-        <p>Loading Event details</p>
+        <p className="text-centre">Loading Event details...</p>
       </div>
     );
   }
