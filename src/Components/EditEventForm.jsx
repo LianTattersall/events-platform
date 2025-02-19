@@ -12,6 +12,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState([]);
 
   function handleDiscard(e) {
     e.preventDefault();
@@ -28,6 +29,18 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
   }
 
   function updateEvent() {
+    setError([]);
+    for (const key in formData) {
+      if (formData[key] == "") {
+        setError((curr) => [...curr, key]);
+      }
+    }
+    for (const key in formData) {
+      if (formData[key] == "") {
+        setPublishModalOpen(false);
+        return null;
+      }
+    }
     setLoading(true);
     patchEvent(formData)
       .then(({ event }) => {
@@ -42,12 +55,14 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
 
   return (
     <>
-      <form>
-        <img
-          src={formData.image_URL}
-          alt={event.image_description}
-          style={{ height: "200px" }}
-        />
+      <form className="margin-auto">
+        <div className="centre-flex-container">
+          <img
+            src={formData.image_URL}
+            alt={event.image_description}
+            style={{ height: "200px", marginBottom: "20px" }}
+          />
+        </div>
         <ImagePicker setFormData={setFormData} />
         <EventField
           label={"Image description for screen readers: "}
@@ -55,6 +70,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
           type={"text"}
           setFormData={setFormData}
           value={formData.image_description}
+          error={error.indexOf("image_description") != -1}
         />
         <EventField
           label={"Event Name: "}
@@ -62,17 +78,36 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
           id={"event_name"}
           setFormData={setFormData}
           value={formData.event_name}
+          error={error.indexOf("event_name") != -1}
         />
         <div>
-          <label htmlFor="description">Description: </label>
-          <textarea
-            id="description"
-            style={{ height: "80px", width: "200px" }}
-            onChange={(e) => {
-              setFormData({ ...formData, description: e.target.value });
-            }}
-            value={formData.description}
-          />
+          <label
+            htmlFor="description"
+            className="bold"
+            style={{ paddingLeft: "5px" }}
+          >
+            Description:
+          </label>
+          {error.indexOf("description") != -1 ? (
+            <p
+              className="error"
+              style={{ fontSize: "13px", paddingLeft: "5px" }}
+            >
+              Please enter description
+            </p>
+          ) : null}
+          <div className="textarea-container">
+            <textarea
+              id="description"
+              className={`textarea ${
+                error.indexOf("description") == -1 ? "" : "red-border"
+              }`}
+              onChange={(e) => {
+                setFormData({ ...formData, description: e.target.value });
+              }}
+              value={formData.description}
+            />
+          </div>
         </div>
         <EventField
           type={"date"}
@@ -80,6 +115,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
           label={"Event Date: "}
           setFormData={setFormData}
           value={formData.event_date}
+          error={error.indexOf("event_date") != -1}
         />
         <EventField
           label={"Start Time: "}
@@ -87,6 +123,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
           type={"time"}
           setFormData={setFormData}
           value={formData.start_time}
+          error={error.indexOf("start_time") != -1}
         />
         <EventField
           id={"end_time"}
@@ -94,6 +131,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
           type={"time"}
           setFormData={setFormData}
           value={formData.end_time}
+          error={error.indexOf("end_time") != -1}
         />
         <div>
           <label htmlFor="signup-limit">Signup Limit: </label>
@@ -104,7 +142,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
               setSignupLimitInput(e.target.value);
               setFormData({ ...formData, signup_limit: e.target.value });
             }}
-            value={formData.signup_limit}
+            value={signupLimitInput}
           />
           <label htmlFor="unlimited-signups">No limit</label>
           <input
@@ -128,6 +166,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
           label={"Price: "}
           setFormData={setFormData}
           value={formData.price}
+          error={error.indexOf("price") != -1}
         />
         <EventField
           type={"text"}
@@ -135,6 +174,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
           label={"Firstline Address: "}
           setFormData={setFormData}
           value={formData.firstline_address}
+          error={error.indexOf("firstline_address") != -1}
         />
         <EventField
           type={"text"}
@@ -142,9 +182,18 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
           label={"Postcode: "}
           setFormData={setFormData}
           value={formData.postcode}
+          error={error.indexOf("postcode") != -1}
         />
-        <button onClick={handlePublish}>Publish Changes</button>
-        <button onClick={handleDiscard}>Discard Changes</button>
+        <button
+          onClick={handlePublish}
+          className="buttons"
+          style={{ marginLeft: "5px" }}
+        >
+          Publish Changes
+        </button>
+        <button onClick={handleDiscard} className="buttons">
+          Discard Changes
+        </button>
       </form>
       <Modal
         open={modalOpen}
@@ -161,8 +210,9 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
             width: "90%",
             maxWidth: 400,
             height: 200,
-            border: "2px solid #000",
+            borderRadius: "10px",
             backgroundColor: "white",
+            padding: "10px",
           }}
         >
           <p>Are you sure you want to discard these changes?</p>
@@ -192,14 +242,12 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
             width: "90%",
             maxWidth: 400,
             height: 200,
-            border: "2px solid #000",
+            borderRadius: "10px",
             backgroundColor: "white",
+            padding: "10px",
           }}
         >
-          <p>
-            Are you sure you want to publish these changes? This action will
-            send an email notifying all current attendees.
-          </p>
+          <p>Are you sure you want to publish these changes?</p>
           {loading ? (
             <p>Updating Event</p>
           ) : (
