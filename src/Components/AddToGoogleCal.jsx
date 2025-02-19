@@ -88,10 +88,12 @@ export default function AddToGoogleCal({
         <>
           <p className="error">
             It looks like we don't have access to your google calendar. Please
-            click on the button below to grant access to your google calendar
-            and add the event to it!
+            click on the 'Add to Google Calendar' button again to grant access
+            to your google calendar and add the event to it!
           </p>
-          <button onClick={login}>Add to Google Calendar</button>
+          <button onClick={login} className="buttons">
+            Add to Google Calendar
+          </button>
         </>
       );
     } else {
