@@ -48,7 +48,9 @@
 }
 
 .button-no-display {
-  all: initial;
+  background-color: transparent;
+  border: 0px;
+  font-size: medium;
   cursor: pointer;
 }
 
@@ -402,4 +404,86 @@ input:-webkit-autofill:active {
 .max-width-800 {
   margin: auto;
   max-width: 800px;
+}
+
+.red-border {
+  border: 1px solid red;
+}
+
+table {
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+  border-collapse: collapse;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+table,
+tr,
+td,
+th {
+  border-bottom: 1px solid #088b8f;
+}
+
+td,
+th {
+  text-align: center;
+}
+
+tr {
+  height: 50px;
+}
+
+tbody tr:hover,
+tbody tr:focus {
+  background-color: #e4ebec;
+  cursor: pointer;
+}
+
+.no-text-decoration {
+  text-decoration: none;
+  color: black;
+}
+
+.search-users {
+  width: 100%;
+  flex: 1;
+  box-sizing: border-box;
+  display: block;
+  border: 0px;
+  background-color: rgb(207, 226, 226);
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.search-users-container {
+  width: 95%;
+  max-width: 800px;
+  display: flex;
+  margin: auto;
+}
+
+.user-row:hover {
+  background-color: white;
+  cursor: auto;
+}
+
+.margin-auto {
+  margin: auto;
+  width: 100%;
+  max-width: 800px;
+}
+
+.details-container {
+  width: fit-content;
+  margin: auto;
+  padding: 5px;
+}
+
+.footer-container {
+  background-color: #088b8f;
+  width: 100%;
 }
