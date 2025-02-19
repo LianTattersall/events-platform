@@ -1,12 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { getEventsOrganisedByUser } from "../api";
 import { UserContext } from "../Contexts/UserContext";
 import { Link, useNavigate } from "react-router";
 import { dateConverter } from "../utils";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function ManageEvents() {
-  const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
   const { userId } = useContext(UserContext);
 
   const [loading, setLoading] = useState(true);
@@ -67,23 +66,13 @@ export default function ManageEvents() {
 
   if (loading) {
     return (
-      <div
-        className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-        onClick={() => {
-          setMenuDrawerOpen(false);
-        }}
-      >
+      <PageTemplate>
         <p className="text-centre">Loading your events</p>
-      </div>
+      </PageTemplate>
     );
   }
   return (
-    <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
+    <PageTemplate>
       <h1 className="text-centre">My Events</h1>
       <h2 className="text-centre">Upcoming events</h2>
       <table>
@@ -165,6 +154,6 @@ export default function ManageEvents() {
         </div>
       ) : null}
       {loadingMore.past ? <p className="text-centre">Loading more...</p> : null}
-    </div>
+    </PageTemplate>
   );
 }

@@ -3,6 +3,7 @@ import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { getSavedEvents, getSavedTM } from "../api";
 import { UserContext } from "../Contexts/UserContext";
 import EventCardSmall from "../Components/EventCardSmall";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function SavedEvents() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -60,12 +61,7 @@ export default function SavedEvents() {
   }
 
   return (
-    <div
-      className={menuDrawerOpen ? "margin-with-drawer" : "margin-no-drawer"}
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
+    <PageTemplate>
       {error != "" ? <p className="error text-centre">{error}</p> : null}
       <h1 className="text-centre">Saved Events</h1>
       <h2 style={{ paddingLeft: "10px" }}>Community Events</h2>
@@ -130,6 +126,6 @@ export default function SavedEvents() {
         </div>
       ) : null}
       {loadingMore.tm ? <p className="text-centre">Loading More</p> : null}
-    </div>
+    </PageTemplate>
   );
 }

@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import { UserContext } from "../Contexts/UserContext";
 import emailjs from "@emailjs/browser";
 import { dateConverter } from "../utils";
+import PageTemplate from "../Components/PageTemplate";
 
 export default function SignupToEvent() {
   const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
@@ -91,27 +92,20 @@ export default function SignupToEvent() {
   }
 
   return (
-    <div
-      className={
-        menuDrawerOpen
-          ? "margin-with-drawer flex-start-column"
-          : "margin-no-drawer flex-start-column"
-      }
-      onClick={() => {
-        setMenuDrawerOpen(false);
-      }}
-    >
-      <h1>Signing up</h1>
-      <p style={{ margin: "10px" }}>
-        You are signing up to {event.event_name} on the{" "}
-        {dateConverter(event.event_date)}, {event.start_time.slice(0, -3)}. By
-        clicking below your name ({name}) and email ({email}) will be added to
-        the signup list which the organiser can see. They may contact you via
-        email about further details and payment.
-      </p>
-      <button onClick={signUserUp} className="buttons">
-        Confirm
-      </button>
-    </div>
+    <PageTemplate>
+      <div className="flex-start-column">
+        <h1>Signing up</h1>
+        <p style={{ margin: "10px" }}>
+          You are signing up to {event.event_name} on the{" "}
+          {dateConverter(event.event_date)}, {event.start_time.slice(0, -3)}. By
+          clicking below your name ({name}) and email ({email}) will be added to
+          the signup list which the organiser can see. They may contact you via
+          email about further details and payment.
+        </p>
+        <button onClick={signUserUp} className="buttons">
+          Confirm
+        </button>
+      </div>
+    </PageTemplate>
   );
 }
