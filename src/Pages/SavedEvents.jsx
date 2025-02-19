@@ -83,7 +83,9 @@ export default function SavedEvents() {
             type={"community"}
           />
         ))}
-        {events.length == 0 && !loading ? <p>No saved events!</p> : null}
+        {events.length == 0 && !loading.community ? (
+          <p>No saved events!</p>
+        ) : null}
       </div>
       {totalRef.current > events.length && !loadingMore.community ? (
         <div className="centre-flex-container">
@@ -113,7 +115,7 @@ export default function SavedEvents() {
             type={"TM"}
           />
         ))}
-        {tM.length == 0 && !loading ? <p>No saved events!</p> : null}
+        {tM.length == 0 && !loading.tm ? <p>No saved events!</p> : null}
       </div>
       {TMTotalRef.current > tM.length && !loadingMore.tm ? (
         <div className="centre-flex-container">
