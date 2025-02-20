@@ -34,18 +34,27 @@ export default function SignupToEvent() {
 
   function signUserUp() {
     const emailParams = {
+      subject: "Confirmation",
       to_email: email,
       to_name: name,
-      message: `This is a confirmation email that you have signed up to ${event.event_name} on the ${event.event_date}, ${event.start_time} at ${event.firstline_address}, ${event.postcode}. The organiser should be in contact with further details. Please contact ${event.organiser_email} if you have any questions.`,
+      message: `This is a confirmation email that you have signed up to ${
+        event.event_name
+      } on the ${dateConverter(event.event_date)}, ${event.start_time} at ${
+        event.firstline_address
+      }, ${
+        event.postcode
+      }. The organiser should be in contact with further details. Please contact ${
+        event.organiser_email
+      } if you have any questions.`,
     };
     setLoading(true);
     postSignup(userId, event_id)
       .then((data) => {
         return emailjs.send(
-          "service_1koacbe",
-          "template_thfmz8b",
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
           emailParams,
-          "6I2IQdNYljWCqPhK5"
+          import.meta.env.VITE_EMAILJS_KEY
         );
       })
       .then(() => {
