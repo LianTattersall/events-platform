@@ -88,7 +88,7 @@ export default function TicketMasterEventSearch() {
       </section>
       <section className="controls-container">
         <div className="width-fit-content">
-          <label htmlFor="start-date">Date:</label>
+          <label htmlFor="start-date">Date: </label>
           <input
             type="date"
             id="start-date"
@@ -96,7 +96,7 @@ export default function TicketMasterEventSearch() {
           ></input>
         </div>
         <div className="width-fit-content">
-          <label htmlFor="genre">Category:</label>
+          <label htmlFor="genre">Category: </label>
           <select
             name="classification"
             onChange={(e) => {
@@ -141,7 +141,7 @@ export default function TicketMasterEventSearch() {
           </select>
         </div>
         <div className="width-fit-content">
-          <label htmlFor="region">Region</label>
+          <label htmlFor="region">Region: </label>
           <select
             name="marketId"
             onChange={(e) => {
