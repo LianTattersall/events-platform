@@ -13,6 +13,7 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState([]);
+  const [apiErr, setApiErr] = useState("");
 
   function handleDiscard(e) {
     e.preventDefault();
@@ -31,12 +32,13 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
   function updateEvent() {
     setError([]);
     for (const key in formData) {
-      if (formData[key] == "") {
+      if (formData[key] === "") {
         setError((curr) => [...curr, key]);
       }
     }
+
     for (const key in formData) {
-      if (formData[key] == "") {
+      if (formData[key] === "") {
         setPublishModalOpen(false);
         return null;
       }
@@ -49,7 +51,9 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
         setEvent(event);
       })
       .catch((err) => {
-        console.log(err);
+        setLoading(false);
+        setPublishModalOpen(false);
+        setApiErr("An error has occured updating this event");
       });
   }
 
@@ -194,6 +198,11 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
         <button onClick={handleDiscard} className="buttons">
           Discard Changes
         </button>
+        {apiErr != "" ? (
+          <p className="error" style={{ paddingLeft: "5px" }}>
+            {apiErr}
+          </p>
+        ) : null}
       </form>
       <Modal
         open={modalOpen}
@@ -217,11 +226,14 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
         >
           <p>Are you sure you want to discard these changes?</p>
 
-          <button onClick={discardChanges}>Yes, Discard changes</button>
+          <button onClick={discardChanges} className="buttons">
+            Yes, Discard changes
+          </button>
           <button
             onClick={() => {
               setModalOpen(false);
             }}
+            className="buttons"
           >
             No, keep editing
           </button>
@@ -252,8 +264,13 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
             <p>Updating Event</p>
           ) : (
             <>
-              <button onClick={updateEvent}>Yes, publish changes</button>
-              <button onClick={() => setPublishModalOpen(false)}>
+              <button onClick={updateEvent} className="buttons">
+                Yes, publish changes
+              </button>
+              <button
+                onClick={() => setPublishModalOpen(false)}
+                className="buttons"
+              >
                 No, keep editing
               </button>
             </>
