@@ -29,7 +29,6 @@ export default function LoginGoogle() {
             }
           )
           .then(({ data }) => {
-            console.log("hello");
             return getUser(data.id);
           })
           .then(({ user }) => {
