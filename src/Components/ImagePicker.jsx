@@ -57,7 +57,7 @@ export default function ImagePicker({ setFormData }) {
           Upload
         </button>
       ) : status == "loading" ? (
-        <p>Uploading Image...</p>
+        <p style={{ paddingLeft: "5px" }}>Uploading Image...</p>
       ) : null}
     </div>
   );
