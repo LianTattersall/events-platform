@@ -207,9 +207,9 @@ export const getEventsOrganisedByUser = (organiser_id, type, p) => {
     });
 };
 
-export const getSignupsForEvent = (event_id, searchTerm, p) => {
+export const getSignupsForEvent = (event_id, searchTerm, p, limit = 5) => {
   return eventsApi
-    .get(`/events/${event_id}/users`, { params: { searchTerm, limit: 5, p } })
+    .get(`/events/${event_id}/users`, { params: { searchTerm, limit, p } })
     .then(({ data }) => {
       return data;
     });
