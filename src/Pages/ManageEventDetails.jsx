@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { getEventById, getSignupsForEvent } from "../api";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import EditEventForm from "../Components/EditEventForm";
 import { init } from "@emailjs/browser";
 import PageTemplate from "../Components/PageTemplate";
@@ -69,7 +69,7 @@ export default function ManageEventDetails() {
         <img
           src={event.image_URL}
           alt={event.image_description}
-          style={{ height: "200px", margin: "auto" }}
+          style={{ height: "200px", margin: "auto", borderRadius: "10px" }}
         />
       </div>
       <div className="details-container">
@@ -99,7 +99,7 @@ export default function ManageEventDetails() {
         </p>
         <p>
           <span className="bold">Signup Limit: </span>
-          {event.signup_limit}
+          {event.signup_limit || "Unlimited"}
         </p>
         <p>
           <span className="bold">Price: </span>
@@ -175,12 +175,23 @@ export default function ManageEventDetails() {
       {totalRef.current > attendees.length && !loadnig.loadingMore ? (
         <div className="centre-flex-container">
           <button className="buttons" onClick={loadMore}>
-            Load More
+            Load More Attendees
           </button>
         </div>
       ) : null}
       {loadnig.loadingMore ? (
         <p className="text-centre">Loading more...</p>
+      ) : null}
+      {attendees.length > 0 ? (
+        <div className="centre-flex-container">
+          <Link
+            to={`/emailUpdate/${event.event_id}`}
+            className="buttons"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            Send an email update to attendees
+          </Link>
+        </div>
       ) : null}
       <h2 className="text-centre">Details</h2>
       {edit ? (
