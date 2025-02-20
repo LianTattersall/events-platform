@@ -32,6 +32,14 @@ export default function SignupList({ signups, setError, setSignups, userId }) {
     }
   }
 
+  if (signups.length == 0) {
+    return (
+      <p style={{ height: "200px" }} className="text-centre">
+        No signups yet!
+      </p>
+    );
+  }
+
   return (
     <>
       <div className="flex-wrap-container">
