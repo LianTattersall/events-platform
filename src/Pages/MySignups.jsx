@@ -41,12 +41,20 @@ export default function MySignups() {
 
   function LoadMore(type, offset, setter) {
     setLoading((curr) => {
-      return { ...curr, upcoming: true };
+      if (type == "curr") {
+        return { ...curr, upcoming: true };
+      } else if (type == "past") {
+        return { ...curr, past: true };
+      }
     });
     getSignups(userId, type, offset).then(({ signups }) => {
       setter((curr) => [...curr, ...signups]);
       setLoading((curr) => {
-        return { ...curr, upcoming: false };
+        if (type == "curr") {
+          return { ...curr, upcoming: false };
+        } else if (type == "past") {
+          return { ...curr, past: false };
+        }
       });
     });
   }
@@ -55,14 +63,6 @@ export default function MySignups() {
     return (
       <PageTemplate>
         <p>Loading signups...</p>
-      </PageTemplate>
-    );
-  }
-
-  if (signups.length == 0) {
-    return (
-      <PageTemplate>
-        <p>No signups yet!</p>
       </PageTemplate>
     );
   }
@@ -103,6 +103,7 @@ export default function MySignups() {
         setSignups={setPastSignups}
         userId={userId}
       />
+      {loading.past ? <p className="text-centre">Loading more...</p> : null}
       {pastTotal.current > pastSignups.length && !loading.past ? (
         <div className="centre-flex-container">
           <button
