@@ -117,9 +117,13 @@ export default function CommunityEventSearch() {
       </section>
 
       {events.length == 0 && !loading ? (
-        <p>No events match this search. Sorry!</p>
+        <p className="text-centre">No events match this search. Sorry!</p>
       ) : null}
-      {loading ? <p>Loading events ...</p> : <DisplayEvents events={events} />}
+      {loading ? (
+        <p className="text-centre">Loading events ...</p>
+      ) : (
+        <DisplayEvents events={events} />
+      )}
       {loadingMore ? (
         <p className="text-centre">Loading More events...</p>
       ) : (
