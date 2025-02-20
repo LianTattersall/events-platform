@@ -19,11 +19,14 @@ import ManageEventDetails from "./Pages/ManageEventDetails";
 import CreateEvent from "./Pages/CreateEvent";
 import SignupToEvent from "./Pages/SignupToEvent";
 import Confirmation from "./Pages/Confirmation";
+import SkipToMain from "./Components/SkipToMain";
+import EmailUpdate from "./Pages/EmailUpdate";
 
 function App() {
   return (
     <UserContextProvider>
       <MenuDrawerProvider>
+        <SkipToMain />
         <Navbar />
         <MenuDrawer />
         <Routes>
@@ -44,6 +47,7 @@ function App() {
           <Route path="/createEvent" element={<CreateEvent />} />
           <Route path="/signup/:event_id" element={<SignupToEvent />} />
           <Route path="/confirmation/:event_id" element={<Confirmation />} />
+          <Route path="/emailUpdate/:event_id" element={<EmailUpdate />} />
         </Routes>
       </MenuDrawerProvider>
     </UserContextProvider>
