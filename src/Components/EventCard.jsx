@@ -4,7 +4,7 @@ import { dateConverter } from "../utils";
 export default function EventCard({ event }) {
   return (
     <Link
-      style={{ all: "initial", cursor: "pointer" }}
+      style={{ textDecoration: "none", color: "black", cursor: "pointer" }}
       to={`/events/${event.event_id}`}
     >
       <div className="card-container">
