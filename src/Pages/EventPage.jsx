@@ -21,11 +21,14 @@ export default function EventPage() {
       })
       .catch((err) => {
         setLoading(false);
-
-        if (err.response.status == 404) {
-          setError("404 - Page not found");
-        } else if (err.response.status == 400) {
-          setError("400 - Invalid data type for event ID");
+        if (err.response) {
+          if (err.response.status == 404) {
+            setError("404 - Page not found");
+          } else if (err.response.status == 400) {
+            setError("400 - Invalid data type for event ID");
+          }
+        } else {
+          setError("An error has occured");
         }
       });
   }, []);
@@ -63,11 +66,11 @@ export default function EventPage() {
           </p>
           <p>
             <span className="bold">Start: </span>
-            {event.start_time}
+            {event.start_time.slice(0, -3)}
           </p>
           <p>
             <span className="bold">End: </span>
-            {event.end_time}
+            {event.end_time.slice(0, -3)}
           </p>
           <p>
             <span className="bold">Price: </span>

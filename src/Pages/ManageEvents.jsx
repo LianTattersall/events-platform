@@ -74,7 +74,7 @@ export default function ManageEvents() {
   return (
     <PageTemplate>
       <h1 className="text-centre">My Events</h1>
-      <h2 className="text-centre">Upcoming events</h2>
+      <h2 className="text-centre">Upcoming Events</h2>
       <table>
         <thead>
           <tr className="bold">
