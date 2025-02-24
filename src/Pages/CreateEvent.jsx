@@ -149,7 +149,7 @@ export default function CreateEvent() {
               setSignupLimitInput(e.target.value);
               setFormData({ ...formData, signup_limit: e.target.value });
             }}
-            value={formData.signup_limit}
+            value={signupLimitInput}
           />
           <label htmlFor="unlimited-signups">No limit</label>
           <input
@@ -164,7 +164,7 @@ export default function CreateEvent() {
                 setFormData({ ...formData, signup_limit: signupLimitInput });
               }
             }}
-            checked={formData.signup_limit == null}
+            checked={formData.signup_limit === null}
           />
         </div>
         <EventField

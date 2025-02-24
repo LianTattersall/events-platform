@@ -13,6 +13,7 @@ export default function TicketMasterEventSearch() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [genre, setGenre] = useState("");
   const [region, setRegion] = useState("");
+  const [error, setError] = useState("");
   const page = useRef(0);
   const totalRef = useRef(0);
 
@@ -26,6 +27,7 @@ export default function TicketMasterEventSearch() {
         page.current = 0;
       })
       .catch((err) => {
+        setError("initial");
         setLoading(false);
       });
   }, [start, genre, region, searchTerm]);
@@ -39,9 +41,12 @@ export default function TicketMasterEventSearch() {
         .then(({ events }) => {
           setEvents((curr) => [...curr, ...events]);
           setLoadingMore(false);
+          setError("");
         })
         .catch((err) => {
+          page.current -= 1;
           setLoadingMore(false);
+          setError("more");
         });
     }
   }
@@ -71,6 +76,11 @@ export default function TicketMasterEventSearch() {
 
   return (
     <>
+      {error === "initial" ? (
+        <p className="text-centre error">
+          An error has occured fetching the events
+        </p>
+      ) : null}
       <section className="search-bar-container">
         <input
           type="text"
@@ -176,7 +186,7 @@ export default function TicketMasterEventSearch() {
           ))
         )}
 
-        {events.length == 0 && !loading ? (
+        {events.length == 0 && !loading && error === "" ? (
           <p>No events match this search. Sorry!</p>
         ) : null}
       </section>
@@ -185,6 +195,11 @@ export default function TicketMasterEventSearch() {
       ) : (
         loadMoreButton
       )}
+      {error === "more" ? (
+        <p className="text-centre error">
+          An error has occured loading more events
+        </p>
+      ) : null}
     </>
   );
 }

@@ -11,19 +11,24 @@ export default function CommunityEventSearch() {
   const [type, setType] = useState("current");
   const [orderby, setOrderby] = useState("asc");
   const [sortby, setSortby] = useState("date");
+  const [error, setError] = useState("");
   const page = useRef(1);
   const totalRef = useRef(0);
 
   useEffect(() => {
     setLoading(true);
-    getEventsWithQueries(sortby, orderby, searchTerm, type, 1).then(
-      ({ events, total }) => {
+    getEventsWithQueries(sortby, orderby, searchTerm, type, 1)
+      .then(({ events, total }) => {
         totalRef.current = total;
         page.current = 1;
         setLoading(false);
         setEvents(events);
-      }
-    );
+      })
+      .catch((err) => {
+        setLoading(false);
+        setLoadingMore(false);
+        setError("initial");
+      });
   }, [sortby, orderby, type, searchTerm]);
 
   function handleEnter(e) {
@@ -39,12 +44,18 @@ export default function CommunityEventSearch() {
   function handleLoadMore() {
     page.current += 1;
     setLoadingMore(true);
-    getEventsWithQueries(sortby, orderby, searchTerm, type, page.current).then(
-      ({ events }) => {
+    getEventsWithQueries(sortby, orderby, searchTerm, type, page.current)
+      .then(({ events }) => {
+        setError("");
         setLoadingMore(false);
         setEvents((curr) => [...curr, ...events]);
-      }
-    );
+      })
+      .catch((err) => {
+        page.current -= 1;
+        setLoading(false);
+        setLoadingMore(false);
+        setError("more");
+      });
   }
   const loadMoreButton =
     totalRef.current > events.length ? (
@@ -57,6 +68,11 @@ export default function CommunityEventSearch() {
 
   return (
     <>
+      {error == "initial" ? (
+        <p className="text-centre error">
+          An error has occured fetching the events
+        </p>
+      ) : null}
       <section className="search-bar-container">
         <input
           type="text"
@@ -116,7 +132,7 @@ export default function CommunityEventSearch() {
         </div>
       </section>
 
-      {events.length == 0 && !loading ? (
+      {events.length === 0 && !loading && error === "" ? (
         <p className="text-centre">No events match this search. Sorry!</p>
       ) : null}
       {loading ? (
@@ -129,6 +145,11 @@ export default function CommunityEventSearch() {
       ) : (
         loadMoreButton
       )}
+      {error == "more" ? (
+        <p className="text-centre error">
+          An error has occured loading more events
+        </p>
+      ) : null}
     </>
   );
 }

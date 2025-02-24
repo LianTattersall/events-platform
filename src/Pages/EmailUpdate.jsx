@@ -28,7 +28,14 @@ export default function EmailUpdate() {
         attendeesRef.current = users;
       })
       .catch((err) => {
-        setError("An error occured loading the event data");
+        setLoading(false);
+        if (err.response) {
+          if (err.response.status === 404) {
+            setError("404 - Event not found");
+          }
+        } else {
+          setError("Error loading event details");
+        }
       });
   }, []);
 
@@ -42,35 +49,48 @@ export default function EmailUpdate() {
     const emailArr = attendeesRef.current.map((user) => {
       return sendEmail(user.email, user.name);
     });
-    return Promise.all(emailArr).then(() => {
-      setLoading(false);
-      setSuccess("Emails sent!");
-    });
+    return Promise.all(emailArr)
+      .then(() => {
+        setLoading(false);
+        setError("");
+        setSuccess("Emails sent!");
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError("An error occured sending the email.");
+      });
   }
 
   function sendEmail(emailAddress, name) {
     const emailParams = {
       subject,
-      message: `There is an update about the event ${event.event_name}: \n${message}`,
+      message: `There is an update about the event ${event.event_name}: \n\n${message} \n\nPlease contact ${event.organiser_email} if you have any questions.`,
       to_email: emailAddress,
       to_name: name,
     };
-    return emailjs
-      .send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        emailParams,
-        import.meta.env.VITE_EMAILJS_KEY
-      )
-      .catch((err) => {
-        setError("An error occured sending the email.");
-      });
+    return emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      emailParams,
+      import.meta.env.VITE_EMAILJS_KEY
+    );
   }
 
   if (loading) {
     return (
       <PageTemplate>
         <p className="text-centre">Loading...</p>
+      </PageTemplate>
+    );
+  }
+
+  if (
+    error === "404 - Event not found" ||
+    error === "Error loading event details"
+  ) {
+    return (
+      <PageTemplate>
+        <p className="error text-centre">{error}</p>
       </PageTemplate>
     );
   }
@@ -101,7 +121,7 @@ export default function EmailUpdate() {
         </label>
         <textarea
           className="textarea"
-          style={{ height: "400px" }}
+          style={{ height: "400px", padding: "10px" }}
           name=""
           id="message"
           value={message}

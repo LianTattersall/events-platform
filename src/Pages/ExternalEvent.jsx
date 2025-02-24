@@ -22,19 +22,24 @@ export default function ExternalEvent() {
         setEvent(data);
       })
       .catch((err) => {
-        if (
-          err.response.data.err.message == "Request failed with status code 404"
-        ) {
-          setError("404 - Page not found");
-        }
         setLoading(false);
+        if (err.response) {
+          if (
+            err.response.data.err.message ==
+            "Request failed with status code 404"
+          ) {
+            setError("404 - Page not found");
+          }
+        } else {
+          setError("An error has occured fetching the event");
+        }
       });
   }, []);
 
   if (loading) {
     return (
       <PageTemplate>
-        <p>Loading Event Details...</p>
+        <p className="text-centre">Loading Event Details...</p>
       </PageTemplate>
     );
   }
@@ -42,7 +47,7 @@ export default function ExternalEvent() {
   if (error) {
     return (
       <PageTemplate>
-        <p className="error">{error}</p>
+        <p className="error text-centre">{error}</p>
       </PageTemplate>
     );
   }
