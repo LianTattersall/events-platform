@@ -4,9 +4,10 @@ import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
 import { deleteSignup } from "../api";
 
-export default function SignupList({ signups, setError, setSignups, userId }) {
+export default function SignupList({ signups, setSignups, userId }) {
   const eventToDelete = useRef({});
   const [open, setOpen] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   function handleDeleteClick(event_id, event_name) {
     eventToDelete.current = { event_id, event_name };
@@ -25,10 +26,14 @@ export default function SignupList({ signups, setError, setSignups, userId }) {
         curr.filter((event) => event.event_id != eventToDelete.current.event_id)
       );
       setOpen(false);
-      deleteSignup(userId, eventToDelete.current.event_id).catch(() => {
-        setSignups(beforeDelete);
-        setError("An error has occured deleting this event.");
-      });
+      deleteSignup(userId, eventToDelete.current.event_id)
+        .then(() => {
+          setDeleteError("");
+        })
+        .catch(() => {
+          setSignups(beforeDelete);
+          setDeleteError("An error has occured deleting this event.");
+        });
     }
   }
 
@@ -42,6 +47,11 @@ export default function SignupList({ signups, setError, setSignups, userId }) {
 
   return (
     <>
+      {deleteError !== "" ? (
+        <p className="error text-centre">
+          An error has occured deleting this event
+        </p>
+      ) : null}
       <div className="flex-wrap-container">
         {signups.map((event, index) => (
           <div className="signup-container" key={index}>

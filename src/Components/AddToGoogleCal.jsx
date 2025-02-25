@@ -97,7 +97,14 @@ export default function AddToGoogleCal({
         </>
       );
     } else {
-      return <p>{error}</p>;
+      return (
+        <>
+          <p className="error">{error}</p>{" "}
+          <button onClick={() => addToCal(accessToken)} className="buttons">
+            Add to Google Calendar
+          </button>
+        </>
+      );
     }
   }
 

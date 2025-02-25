@@ -15,6 +15,11 @@ export default function ManageEvents() {
     upcoming: false,
     past: false,
   });
+  const [error, setError] = useState({
+    initial: false,
+    past: false,
+    upcoming: false,
+  });
   const totalRef = useRef({});
   const pRef = useRef({ upcoming: 1, past: 1 });
 
@@ -31,6 +36,11 @@ export default function ManageEvents() {
         totalRef.current.past = total;
         setPastEvents(events);
         setLoading(false);
+      })
+      .catch(() => {
+        setError((curr) => {
+          return { ...curr, initial: true };
+        });
       });
   }, []);
 
@@ -39,14 +49,24 @@ export default function ManageEvents() {
     setLoadingMore((curr) => {
       return { ...curr, upcoming: true };
     });
-    getEventsOrganisedByUser(userId, "curr", pRef.current.upcoming).then(
-      ({ events }) => {
+    getEventsOrganisedByUser(userId, "curr", pRef.current.upcoming)
+      .then(({ events }) => {
         setEvents((curr) => [...curr, ...events]);
         setLoadingMore((curr) => {
           return { ...curr, upcoming: false };
         });
-      }
-    );
+        setError((curr) => {
+          return { ...curr, upcoming: false };
+        });
+      })
+      .catch(() => {
+        setLoadingMore((curr) => {
+          return { ...curr, upcoming: false };
+        });
+        setError((curr) => {
+          return { ...curr, upcoming: true };
+        });
+      });
   }
 
   function loadMorePast() {
@@ -54,13 +74,34 @@ export default function ManageEvents() {
     setLoadingMore((curr) => {
       return { ...curr, past: true };
     });
-    getEventsOrganisedByUser(userId, "past", pRef.current.upcoming).then(
-      ({ events }) => {
+    getEventsOrganisedByUser(userId, "past", pRef.current.past)
+      .then(({ events }) => {
         setPastEvents((curr) => [...curr, ...events]);
         setLoadingMore((curr) => {
           return { ...curr, past: false };
         });
-      }
+        setError((curr) => {
+          return { ...curr, past: false };
+        });
+      })
+      .catch(() => {
+        pRef.current.past -= 1;
+        setError((curr) => {
+          return { ...curr, past: true };
+        });
+        setLoadingMore((curr) => {
+          return { ...curr, past: false };
+        });
+      });
+  }
+
+  if (error.initial) {
+    return (
+      <PageTemplate>
+        <p className="text-centre error">
+          An error has occured loading your events
+        </p>
+      </PageTemplate>
     );
   }
 
@@ -115,6 +156,11 @@ export default function ManageEvents() {
       {loadingMore.upcoming ? (
         <p className="text-centre">Loading more...</p>
       ) : null}
+      {error.upcoming ? (
+        <p className="error text-centre">
+          An error has occured loading more events
+        </p>
+      ) : null}
       <h2 className="text-centre">Completed Events</h2>
       <table>
         <thead>
@@ -154,6 +200,11 @@ export default function ManageEvents() {
         </div>
       ) : null}
       {loadingMore.past ? <p className="text-centre">Loading more...</p> : null}
+      {error.past ? (
+        <p className="error text-centre">
+          An error has occured loading more events
+        </p>
+      ) : null}
     </PageTemplate>
   );
 }

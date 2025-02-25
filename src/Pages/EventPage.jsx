@@ -58,18 +58,18 @@ export default function EventPage() {
           className="event-image"
           alt={event.image_description}
         ></img>
-        <div className="event-details">
+        <section className="event-details">
           <p>{event.description}</p>
           <p>
             <span className="bold">Date: </span>
             {dateConverter(event.event_date)}
           </p>
           <p>
-            <span className="bold">Start: </span>
+            <span className="bold">Start time: </span>
             {event.start_time.slice(0, -3)}
           </p>
           <p>
-            <span className="bold">End: </span>
+            <span className="bold">End time: </span>
             {event.end_time.slice(0, -3)}
           </p>
           <p>
@@ -80,6 +80,14 @@ export default function EventPage() {
             <span className="bold">Location: </span>
             {event.firstline_address} {event.postcode}
           </p>
+          <p>
+            <span className="bold">Organiser's Name: </span>
+            {event.organiser_name}
+          </p>
+          <p>
+            <span className="bold">Organiser's Email: </span>
+            {event.organiser_email}
+          </p>
 
           {new Date().getTime() < new Date(event.event_date).getTime() &&
           (event.signup_limit == null || event.signup_limit > event.signups) ? (
@@ -88,7 +96,7 @@ export default function EventPage() {
             <p>Event has expired or reched it's signup limit!</p>
           )}
           <SaveButton event_id={event_id} />
-        </div>
+        </section>
       </div>
     </PageTemplate>
   );

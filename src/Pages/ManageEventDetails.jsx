@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router";
 import EditEventForm from "../Components/EditEventForm";
 import { init } from "@emailjs/browser";
 import PageTemplate from "../Components/PageTemplate";
+import { dateConverter } from "../utils";
 
 export default function ManageEventDetails() {
   const { event_id } = useParams();
@@ -14,6 +15,7 @@ export default function ManageEventDetails() {
   const [event, setEvent] = useState({});
   const [edit, setEdit] = useState(false);
   const [loadnig, setLoading] = useState({ initial: true, loadingMore: false });
+  const [error, setError] = useState("");
 
   const totalRef = useRef(null);
   const pRef = useRef(1);
@@ -33,6 +35,13 @@ export default function ManageEventDetails() {
           return { ...curr, initial: false };
         });
         setEvent(event);
+        setError("");
+      })
+      .catch((err) => {
+        setLoading((curr) => {
+          return { ...curr, initial: false };
+        });
+        setError("Error loading page content");
       });
   }, [searchTerm]);
 
@@ -47,18 +56,34 @@ export default function ManageEventDetails() {
     setLoading((curr) => {
       return { ...curr, loadingMore: true };
     });
-    getSignupsForEvent(event_id, searchTerm, pRef.current).then(({ users }) => {
-      setAttendees((curr) => [...curr, ...users]);
-      setLoading((curr) => {
-        return { ...curr, loadingMore: false };
+    getSignupsForEvent(event_id, searchTerm, pRef.current)
+      .then(({ users }) => {
+        setAttendees((curr) => [...curr, ...users]);
+        setLoading((curr) => {
+          return { ...curr, loadingMore: false };
+        });
+      })
+      .catch((err) => {
+        pRef.current -= 1;
+        setError("Error loading more attendees");
+        setLoading((curr) => {
+          return { ...curr, loadingMore: false };
+        });
       });
-    });
   }
 
   if (loadnig.initial) {
     return (
       <PageTemplate>
         <p className="text-centre">Loading details...</p>
+      </PageTemplate>
+    );
+  }
+
+  if (error === "Error loading page content") {
+    return (
+      <PageTemplate>
+        <p className="text-centre error">{error}</p>
       </PageTemplate>
     );
   }
@@ -87,23 +112,22 @@ export default function ManageEventDetails() {
         </p>
         <p>
           <span className="bold">Event Date: </span>
-          {event.event_date}
+          {dateConverter(event.event_date)}
         </p>
         <p>
           <span className="bold">Start Time: </span>
-          {event.start_time}
+          {event.start_time.slice(0, -3)}
         </p>
         <p>
           <span className="bold">End Time: </span>
-          {event.end_time}
+          {event.end_time.slice(0, -3)}
         </p>
         <p>
           <span className="bold">Signup Limit: </span>
           {event.signup_limit || "Unlimited"}
         </p>
         <p>
-          <span className="bold">Price: </span>
-          {event.price}
+          <span className="bold">Price: </span>£{event.price}
         </p>
         <p>
           <span className="bold">First Line Address: </span>
@@ -179,8 +203,11 @@ export default function ManageEventDetails() {
           </button>
         </div>
       ) : null}
-      {loadnig.loadingMore ? (
+      {loadnig.loadingMore && error == "" ? (
         <p className="text-centre">Loading more...</p>
+      ) : null}
+      {error === "Error loading more attendees" ? (
+        <p className="text-centre error">Error loading more attendees</p>
       ) : null}
       {attendees.length > 0 ? (
         <div className="centre-flex-container">

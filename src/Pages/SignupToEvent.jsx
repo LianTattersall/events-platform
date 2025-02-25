@@ -29,6 +29,10 @@ export default function SignupToEvent() {
       .then(({ user }) => {
         setEmail(user.email);
         setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError("An error has occured loading the page content");
       });
   }, []);
 
@@ -78,7 +82,7 @@ export default function SignupToEvent() {
           setMenuDrawerOpen(false);
         }}
       >
-        <p>Loading...</p>
+        <p className="text-centre">Loading...</p>
       </div>
     );
   }
@@ -95,7 +99,7 @@ export default function SignupToEvent() {
           setMenuDrawerOpen(false);
         }}
       >
-        <p>{error}</p>
+        <p className="error text-centre">{error}</p>
       </div>
     );
   }

@@ -1,12 +1,10 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { getSavedEvents, getSavedTM } from "../api";
 import { UserContext } from "../Contexts/UserContext";
 import EventCardSmall from "../Components/EventCardSmall";
 import PageTemplate from "../Components/PageTemplate";
 
 export default function SavedEvents() {
-  const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
   const { userId } = useContext(UserContext);
 
   const [events, setEvents] = useState([]);
@@ -16,7 +14,12 @@ export default function SavedEvents() {
     community: false,
     tm: false,
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState({
+    community: false,
+    tm: false,
+    communityMore: false,
+    tmMore: false,
+  });
 
   const totalRef = useRef(null);
   const TMTotalRef = useRef(null);
@@ -25,14 +28,35 @@ export default function SavedEvents() {
     getSavedEvents(userId)
       .then(({ saved, total }) => {
         setEvents(saved);
-        setLoading({ community: false, tm: true });
+        setLoading((curr) => {
+          return { ...curr, community: false };
+        });
         totalRef.current = total;
-        return getSavedTM(userId);
       })
+      .catch((err) => {
+        setLoading((curr) => {
+          return { ...curr, community: false };
+        });
+        setError((curr) => {
+          return { ...curr, community: true };
+        });
+      });
+
+    getSavedTM(userId)
       .then(({ saved, total }) => {
-        setLoading({ community: false, tm: false });
+        setLoading((curr) => {
+          return { ...curr, tm: false };
+        });
         TMTotalRef.current = total;
         setTM(saved);
+      })
+      .catch((err) => {
+        setLoading((curr) => {
+          return { ...curr, tm: false };
+        });
+        setError((curr) => {
+          return { ...curr, tm: true };
+        });
       });
   }, []);
 
@@ -40,33 +64,63 @@ export default function SavedEvents() {
     setLoadingMore((curr) => {
       return { ...curr, community: true };
     });
-    getSavedEvents(userId, offset).then(({ saved }) => {
-      setter((curr) => [...curr, ...saved]);
-      setLoadingMore((curr) => {
-        return { ...curr, community: false };
+    getSavedEvents(userId, offset)
+      .then(({ saved }) => {
+        setter((curr) => [...curr, ...saved]);
+        setLoadingMore((curr) => {
+          return { ...curr, community: false };
+        });
+        setError((curr) => {
+          return { ...curr, communityMore: false };
+        });
+      })
+      .catch((err) => {
+        setLoadingMore((curr) => {
+          return { ...curr, community: false };
+        });
+        setError((curr) => {
+          return { ...curr, communityMore: true };
+        });
       });
-    });
   }
 
   function LoadMoreTM(offset, setter) {
     setLoadingMore((curr) => {
       return { ...curr, tm: true };
     });
-    getSavedTM(userId, offset).then(({ saved }) => {
-      setter((curr) => [...curr, ...saved]);
-      setLoadingMore((curr) => {
-        return { ...curr, tm: false };
+    getSavedTM(userId, offset)
+      .then(({ saved }) => {
+        setter((curr) => [...curr, ...saved]);
+        setLoadingMore((curr) => {
+          return { ...curr, tm: false };
+        });
+        setError((curr) => {
+          return { ...curr, tmMore: false };
+        });
+      })
+      .catch((err) => {
+        setLoadingMore((curr) => {
+          return { ...curr, tm: false };
+        });
+        setError((curr) => {
+          return { ...curr, tmMore: true };
+        });
       });
-    });
   }
 
   return (
     <PageTemplate>
-      {error != "" ? <p className="error text-centre">{error}</p> : null}
       <h1 className="text-centre">Saved Events</h1>
       <h2 style={{ paddingLeft: "10px" }}>Community Events</h2>
+
       {loading.community ? (
         <p className="text-centre">Loading events...</p>
+      ) : null}
+
+      {error.community ? (
+        <p className="error text-centre">
+          Error loading your saved community events
+        </p>
       ) : null}
       <div className="flex-wrap-container">
         {events.map((event, index) => (
@@ -79,7 +133,7 @@ export default function SavedEvents() {
             type={"community"}
           />
         ))}
-        {events.length == 0 && !loading.community ? (
+        {events.length == 0 && !loading.community && !error.community ? (
           <p>No saved events!</p>
         ) : null}
       </div>
@@ -98,8 +152,18 @@ export default function SavedEvents() {
       {loadingMore.community ? (
         <p className="text-centre">Loading More</p>
       ) : null}
+      {error.communityMore ? (
+        <p className="error text-centre">Error loading more events</p>
+      ) : null}
       <h2 style={{ paddingLeft: "10px" }}>Ticket Master Events</h2>
+
       {loading.tm ? <p className="text-centre">Loading events...</p> : null}
+
+      {error.tm && tM.length === 0 ? (
+        <p className="error text-centre">
+          Error loading your saved Ticket Master events
+        </p>
+      ) : null}
       <div className="flex-wrap-container">
         {tM.map((event, index) => (
           <EventCardSmall
@@ -111,7 +175,9 @@ export default function SavedEvents() {
             type={"TM"}
           />
         ))}
-        {tM.length == 0 && !loading.tm ? <p>No saved events!</p> : null}
+        {tM.length == 0 && !loading.tm && !error.tm ? (
+          <p>No saved events!</p>
+        ) : null}
       </div>
       {TMTotalRef.current > tM.length && !loadingMore.tm ? (
         <div className="centre-flex-container">
@@ -126,6 +192,10 @@ export default function SavedEvents() {
         </div>
       ) : null}
       {loadingMore.tm ? <p className="text-centre">Loading More</p> : null}
+
+      {error.tmMore ? (
+        <p className="error text-centre">Error loading more events</p>
+      ) : null}
     </PageTemplate>
   );
 }

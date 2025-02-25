@@ -9,7 +9,11 @@ export default function MySignups() {
 
   const [signups, setSignups] = useState([]);
   const [pastSignups, setPastSignups] = useState([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState({
+    initial: false,
+    past: false,
+    upcoming: false,
+  });
   const [loading, setLoading] = useState({
     initial: true,
     upcoming: false,
@@ -32,7 +36,9 @@ export default function MySignups() {
         setLoading(false);
       })
       .catch(() => {
-        setError(true);
+        setError((curr) => {
+          return { ...curr, initial: true };
+        });
         setLoading((curr) => {
           return { ...curr, initial: false };
         });
@@ -47,22 +53,56 @@ export default function MySignups() {
         return { ...curr, past: true };
       }
     });
-    getSignups(userId, type, offset).then(({ signups }) => {
-      setter((curr) => [...curr, ...signups]);
-      setLoading((curr) => {
-        if (type == "curr") {
-          return { ...curr, upcoming: false };
-        } else if (type == "past") {
-          return { ...curr, past: false };
-        }
+    getSignups(userId, type, offset)
+      .then(({ signups }) => {
+        setter((curr) => [...curr, ...signups]);
+        setLoading((curr) => {
+          if (type == "curr") {
+            return { ...curr, upcoming: false };
+          } else if (type == "past") {
+            return { ...curr, past: false };
+          }
+        });
+        setError((curr) => {
+          if (type == "curr") {
+            return { ...curr, upcoming: false };
+          } else if (type == "past") {
+            return { ...curr, past: false };
+          }
+        });
+      })
+      .catch((err) => {
+        setError((curr) => {
+          if (type == "curr") {
+            return { ...curr, upcoming: true };
+          } else if (type == "past") {
+            return { ...curr, past: true };
+          }
+        });
+        setLoading((curr) => {
+          if (type == "curr") {
+            return { ...curr, upcoming: false };
+          } else if (type == "past") {
+            return { ...curr, past: false };
+          }
+        });
       });
-    });
   }
 
   if (loading.initial) {
     return (
       <PageTemplate>
-        <p>Loading signups...</p>
+        <p className="text-centre">Loading signups...</p>
+      </PageTemplate>
+    );
+  }
+
+  if (error.initial) {
+    return (
+      <PageTemplate>
+        <p className="text-centre error">
+          An error has occured fetching your signups
+        </p>
       </PageTemplate>
     );
   }
@@ -93,6 +133,11 @@ export default function MySignups() {
           </button>
         </div>
       ) : null}
+      {error.upcoming ? (
+        <p className="error text-centre">
+          An error has occured loading more events
+        </p>
+      ) : null}
 
       <h2 className="bold" style={{ paddingLeft: "10px" }}>
         Completed
@@ -109,7 +154,7 @@ export default function MySignups() {
           <button
             className="buttons"
             onClick={() => {
-              LoadMore("past", signups.length, setSignups);
+              LoadMore("past", signups.length, setPastSignups);
             }}
           >
             Load More
@@ -117,7 +162,11 @@ export default function MySignups() {
         </div>
       ) : null}
 
-      {error != "" ? <p className="error">{error}</p> : null}
+      {error.past ? (
+        <p className="error text-centre">
+          An error has occured loading more events
+        </p>
+      ) : null}
     </PageTemplate>
   );
 }

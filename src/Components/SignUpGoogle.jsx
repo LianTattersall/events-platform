@@ -49,10 +49,14 @@ export default function SignUpGoogle() {
               setError(
                 "An account already exists with this email, try logging in"
               );
+            } else {
+              setError("An error has occured");
             }
           });
       },
-      onError: (error) => console.log("Login Failed:", error),
+      onError: (error) => {
+        setError("An error has occured");
+      },
       scope: "https://www.googleapis.com/auth/calendar.events.owned",
     });
     return login;

@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { MenuDrawerContext } from "../Contexts/MenuDrawContext";
 import { getTicketMasterById } from "../api";
 import AddToGoogleCal from "../Components/AddToGoogleCal";
 import SaveButton from "../Components/SaveButton";
@@ -8,7 +7,6 @@ import { dateConverter } from "../utils";
 import PageTemplate from "../Components/PageTemplate";
 
 export default function ExternalEvent() {
-  const { menuDrawerOpen, setMenuDrawerOpen } = useContext(MenuDrawerContext);
   const { event_id } = useParams();
 
   const [event, setEvent] = useState({});

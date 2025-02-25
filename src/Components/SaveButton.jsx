@@ -77,7 +77,6 @@ export default function SaveButton({ type, event_id }) {
         setError("");
       })
       .catch((err) => {
-        console.log(err);
         setError("An error occured removing this from your saved events list");
       });
   }

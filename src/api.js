@@ -24,7 +24,7 @@ export const getUpcomingTicketMaster = () => {
   end.setHours(23, 0, 0);
 
   return eventsApi
-    .get("/ticketMaster/events.json?", {
+    .get("/ticketMaster/events.json", {
       params: {
         countryCode: "gb",
         startDateTime: start.toISOString().slice(0, -5) + "Z",
@@ -103,7 +103,7 @@ export const postSaved = (user_id, event_id) => {
 
 export const getSignups = (user_id, type, offset) => {
   return eventsApi
-    .get(`/users/${user_id}/signups`, { params: { offset, type } })
+    .get(`/users/${user_id}/signups`, { params: { offset, type, limit: 6 } })
     .then(({ data }) => {
       return data;
     });
@@ -124,7 +124,7 @@ export const deleteSignup = (user_id, event_id) => {
 export const getEventsWithQueries = (sortby, orderby, searchTerm, type, p) => {
   return eventsApi
     .get("/events", {
-      params: { sortby, orderby, searchTerm, type, p },
+      params: { sortby, orderby, searchTerm, type, p, limit: 6 },
     })
     .then(({ data }) => {
       return data;
@@ -168,7 +168,7 @@ export const getTicketMasterWithQueries = (
 
 export const getSavedEvents = (user_id, offset) => {
   return eventsApi
-    .get(`/users/${user_id}/saved`, { params: { offset, limit: 5 } })
+    .get(`/users/${user_id}/saved`, { params: { offset, limit: 6 } })
     .then(({ data }) => {
       return data;
     });
