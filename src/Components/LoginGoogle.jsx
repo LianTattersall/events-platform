@@ -43,10 +43,14 @@ export default function LoginGoogle() {
           .catch((err) => {
             if (err.message == "Request failed with status code 404") {
               setError("No account registered with this email, try signing up");
+            } else {
+              setError("An error has occured");
             }
           });
       },
-      onError: (error) => console.log("Login Failed:", error),
+      onError: (error) => {
+        setError("An error has occured");
+      },
       scope: "https://www.googleapis.com/auth/calendar.events.owned",
     });
     return login;

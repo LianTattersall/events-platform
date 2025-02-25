@@ -45,8 +45,9 @@ export default function LoginForm() {
           setError("Invalid email");
         } else if (err.code == "auth/missing-password") {
           setError("Please enter a password");
+        } else {
+          setError("An error has occured");
         }
-        console.log(err);
       });
   }
 

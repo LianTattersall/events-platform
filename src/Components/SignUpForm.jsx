@@ -50,8 +50,9 @@ export default function SignUpForm() {
             setError("Invalid email address");
           } else if (err.code == "auth/missing-password") {
             setError("Please enter a password");
+          } else {
+            setError("An error has occured");
           }
-          console.log(err);
         });
     }
   }

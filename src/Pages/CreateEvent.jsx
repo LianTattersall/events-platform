@@ -48,6 +48,7 @@ export default function CreateEvent() {
         navigate(`/events/${event.event_id}`);
       })
       .catch((err) => {
+        setLoading(false);
         setError(["api error"]);
       });
   }
