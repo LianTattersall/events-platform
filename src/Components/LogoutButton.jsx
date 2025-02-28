@@ -5,7 +5,8 @@ import { UserContext } from "../Contexts/UserContext";
 import { useNavigate } from "react-router";
 
 export default function LogoutButton() {
-  const { setUserId, setName, setAdmin } = useContext(UserContext);
+  const { setUserId, setName, setAdmin, setAccessToken } =
+    useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -14,9 +15,11 @@ export default function LogoutButton() {
     localStorage.removeItem("user_id");
     localStorage.removeItem("name");
     localStorage.removeItem("admin");
+    localStorage.removeItem("access_token");
     setUserId(null);
     setName(null);
     setAdmin(null);
+    setAccessToken(null);
     navigate("/");
   }
   return (
