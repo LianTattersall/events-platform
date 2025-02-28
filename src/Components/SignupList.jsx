@@ -4,7 +4,14 @@ import { Modal } from "@mui/material";
 import { useRef, useState } from "react";
 import { deleteSignup } from "../api";
 
-export default function SignupList({ signups, setSignups, userId }) {
+export default function SignupList({
+  signups,
+  setSignups,
+  userId,
+  type,
+  signupTotal,
+  pastTotal,
+}) {
   const eventToDelete = useRef({});
   const [open, setOpen] = useState(false);
   const [deleteError, setDeleteError] = useState("");
@@ -22,6 +29,11 @@ export default function SignupList({ signups, setSignups, userId }) {
   function deleteEvent() {
     if (eventToDelete) {
       const beforeDelete = JSON.parse(JSON.stringify(signups));
+      if (type === "upcoming") {
+        signupTotal.current -= 1;
+      } else {
+        pastTotal.current -= 1;
+      }
       setSignups((curr) =>
         curr.filter((event) => event.event_id != eventToDelete.current.event_id)
       );

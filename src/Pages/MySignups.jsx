@@ -106,7 +106,7 @@ export default function MySignups() {
       </PageTemplate>
     );
   }
-
+  console.log(signupTotal);
   return (
     <PageTemplate>
       <h1 className="text-centre">Signups</h1>
@@ -118,7 +118,9 @@ export default function MySignups() {
         setError={setError}
         setSignups={setSignups}
         userId={userId}
-        total={signupTotal}
+        type={"upcoming"}
+        signupTotal={signupTotal}
+        pastTotal={pastTotal}
       />
       {loading.upcoming ? <p className="text-centre">Loading more...</p> : null}
       {signupTotal.current > signups.length && !loading.upcoming ? (
@@ -147,6 +149,9 @@ export default function MySignups() {
         setError={setError}
         setSignups={setPastSignups}
         userId={userId}
+        type={"past"}
+        signupTotal={signupTotal}
+        pastTotal={pastTotal}
       />
       {loading.past ? <p className="text-centre">Loading more...</p> : null}
       {pastTotal.current > pastSignups.length && !loading.past ? (
