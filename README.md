@@ -4,6 +4,10 @@
 
 This is a freelance project for Tech Returners. The website allows users to sign up to events and save events. It also allows staff members to create and manage events.
 
+## Video walk through
+
+link: https://youtu.be/Dl79b-riifo
+
 ## Deployed Site
 
 https://lian468eventsplatform.netlify.app/
