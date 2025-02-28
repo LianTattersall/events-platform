@@ -38,7 +38,7 @@ export default function CreateEvent() {
       }
     }
     for (const key in formData) {
-      if (formData[key] == "") {
+      if (formData[key] === "") {
         return null;
       }
     }

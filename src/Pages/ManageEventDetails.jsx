@@ -5,6 +5,7 @@ import EditEventForm from "../Components/EditEventForm";
 import { init } from "@emailjs/browser";
 import PageTemplate from "../Components/PageTemplate";
 import { dateConverter } from "../utils";
+import DeleteEvent from "../Components/DeleteEvent";
 
 export default function ManageEventDetails() {
   const { event_id } = useParams();
@@ -137,16 +138,21 @@ export default function ManageEventDetails() {
           <span className="bold">Postcode: </span>
           {event.postcode}
         </p>
-        {!edit ? (
-          <button
-            className="buttons"
-            onClick={() => {
-              setEdit(true);
-            }}
-          >
-            Edit details
-          </button>
-        ) : null}
+
+        <button
+          className="buttons"
+          onClick={() => {
+            setEdit(true);
+          }}
+        >
+          Edit details
+        </button>
+        <DeleteEvent
+          event_id={event.event_id}
+          signups={event.signups}
+          event_name={event.event_name}
+          organiser_email={event.organiser_email}
+        />
       </div>
     </div>
   );

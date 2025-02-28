@@ -12,8 +12,10 @@ https://lian468eventsplatform.netlify.app/
 
 email: charlotte2468642@gmail.com \
 email: alexander369632468@gmail.com \
-password: event-organiser-test-user \
+Gmail password: event-organiser-test-user \
 **These accounts are test users on the Google Cloud Project and are the only accounts who can login via google and add events to their google calendar**
+
+**These emails are already signed up to the website. To use these accounts login with the "Login with Google button"**
 
 ## Backend Repository
 

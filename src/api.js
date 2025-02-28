@@ -228,3 +228,7 @@ export const postEvent = (formData) => {
     return data;
   });
 };
+
+export const deleteEvent = (event_id) => {
+  return eventsApi.delete(`/events/${event_id}`);
+};
