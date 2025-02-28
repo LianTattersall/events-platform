@@ -120,7 +120,7 @@ export default function ManageEvents() {
         <thead>
           <tr className="bold">
             <th>Event Name</th>
-            <th>event date</th>
+            <th>Event Date</th>
             <th className="text-centre">Signup count</th>
           </tr>
         </thead>
@@ -166,7 +166,7 @@ export default function ManageEvents() {
         <thead>
           <tr className="bold">
             <td>Event Name</td>
-            <td>event date</td>
+            <td>Event Date</td>
             <td className="text-centre">Signup count</td>
           </tr>
         </thead>

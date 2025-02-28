@@ -8,7 +8,7 @@ export default function BrowseEvents() {
       <h1 className="text-centre">Browse Events</h1>
       <section className="flex-row-centre">
         <Link to={"/browseEvents"} className="margin-20px">
-          Community events
+          Community Events
         </Link>
 
         <Link to={"/browseEventsTM"} className="margin-20px">

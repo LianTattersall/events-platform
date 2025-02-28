@@ -117,7 +117,7 @@ export default function CommunityEventSearch() {
           </select>
         </div>
         <div className="width-fit-content">
-          <label htmlFor="orderby">Orderby: </label>
+          <label htmlFor="orderby">Order by: </label>
           <select
             name="orderby"
             id="orderby"
