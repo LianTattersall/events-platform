@@ -125,7 +125,7 @@ VITE_EMAILJS_TEMPLATE_ID=<Your emailJS template ID>
 
 20. Go to **Authentication -> Add new provider -> Email/Password** to allow email and password authentication.
 
-21. Go to **Project Overview -> Add app -> Web (</>)**, then scroll down and find the firebase config object.
+21. Go to **Project Overview -> Add app -> Web (</>)**. Follow the steps to create an app, then scroll down and find the firebase config object.
 
 22. In folder containing the project install firebase using `npm install firebase`
 
