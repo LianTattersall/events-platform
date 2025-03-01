@@ -118,4 +118,38 @@ VITE_EMAILJS_TEMPLATE_ID=<Your emailJS template ID>
 18. You can find your Public Key in **Account** \
     You can find your Service ID in **Email Services** \
     You can find your Template ID in **Email Templates**
-19. Run the command `npm run dev` to start the local server and view the website!
+
+### Add Firebase
+
+19. Go to https://console.firebase.google.com and create a new project
+
+20. Go to **Authentication -> Add new provider -> Email/Password** to allow email and password authentication.
+
+21. Go to **Project Overview -> Add app -> Web (</>)**, then scroll down and find the firebase config object.
+
+22. In folder containing the project install firebase using `npm install firebase`
+
+23. In the root of the project, add a file called `firebase.js` and add the following code:
+
+```
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: "*****",
+  authDomain: "********",
+  projectId: "*******",
+  storageBucket: "******",
+  messagingSenderId: "**********",
+  appId: "******",
+  measurementId: "********",
+};
+
+const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth();
+```
+
+and replace the `firebaseConfig` object with the one you found from step 21.
+
+24. Run the command `npm run dev` to start the local server and view the website!
