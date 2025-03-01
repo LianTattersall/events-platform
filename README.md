@@ -89,7 +89,7 @@ VITE_CLOUD_NAME=<your product environment cloud name>
 
 13. Create an EmailJS account here: https://dashboard.emailjs.com/sign-up
 14. Go to **Email Services -> Add New Service -> Gmail -> Connect Account** (Replace **Gmail** with a different personal service if you prefer!)
-15. Add am email account of your choice. This will be the email address that sends the confirmation emails and the email updates to users.
+15. Add an email account of your choice. This will be the email address that sends the confirmation emails and the email updates to users.
 16. Create an email template by going to **Email Templates -> Create New Template**. \
     In the **subject** input bar enter `{{subject}}` \
     In the **content** text area enter
