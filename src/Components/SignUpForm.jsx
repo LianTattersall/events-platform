@@ -98,7 +98,7 @@ export default function SignUpForm() {
               setAdminInput(false);
             }}
           ></input>
-          <label htmlFor="not-admin">Non Staff Member</label>
+          <label htmlFor="not-admin">Regular Account</label>
           <div style={{ flex: 1 }}></div>
           <input
             type="radio"
@@ -109,7 +109,7 @@ export default function SignUpForm() {
               setAdminInput(true);
             }}
           ></input>
-          <label htmlFor="admin">Staff Member</label>
+          <label htmlFor="admin">Organiser Account</label>
         </div>
         <label htmlFor="password">Enter A password</label>
         <input

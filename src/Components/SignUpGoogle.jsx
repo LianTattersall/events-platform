@@ -75,7 +75,7 @@ export default function SignUpGoogle() {
               setAdminInput(true);
             }}
           />
-          <label htmlFor="admin">Staff Member</label>
+          <label htmlFor="admin">Organiser Account</label>
           <div style={{ flex: 1 }}></div>
           <input
             type="radio"
@@ -86,7 +86,7 @@ export default function SignUpGoogle() {
               setAdminInput(false);
             }}
           />
-          <label htmlFor="admin">Non Staff Member</label>
+          <label htmlFor="admin">Regular Account</label>
         </div>
       </form>
       <div className="login-google-container centre-flex-container">
