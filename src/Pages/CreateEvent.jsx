@@ -41,7 +41,6 @@ export default function CreateEvent() {
     const eventTimeStamp = new Date(formData.event_date).getTime();
     if (eventTimeStamp < new Date().getTime()) {
       setError((curr) => [...curr, "event_date"]);
-      console.log("hello");
       return null;
     }
 

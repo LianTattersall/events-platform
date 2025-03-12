@@ -37,6 +37,13 @@ export default function EditEventForm({ setEdit, event, setEvent }) {
       }
     }
 
+    const eventTimeStamp = new Date(formData.event_date).getTime();
+    if (eventTimeStamp < new Date().getTime()) {
+      setError((curr) => [...curr, "event_date"]);
+      setPublishModalOpen(false);
+      return null;
+    }
+
     for (const key in formData) {
       if (formData[key] === "") {
         setPublishModalOpen(false);
