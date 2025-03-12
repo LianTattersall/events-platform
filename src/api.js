@@ -183,10 +183,17 @@ export const getSavedTM = async (user_id, offset) => {
     params: { offset, limit: 3 },
   });
   const savedEvents = [];
+
   for (const event of events) {
     await delay(500);
-    const eventDetails = await getTicketMasterById(event.event_id);
-    savedEvents.push(eventDetails);
+    let eventDetails = null;
+    try {
+      eventDetails = await getTicketMasterById(event.event_id);
+    } catch (err) {}
+
+    if (eventDetails != null) {
+      savedEvents.push(eventDetails);
+    }
   }
   return { saved: savedEvents, total };
 };
