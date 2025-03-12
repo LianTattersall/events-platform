@@ -93,7 +93,7 @@ export default function EventPage() {
           (event.signup_limit == null || event.signup_limit > event.signups) ? (
             <SignUpButton event_id={event.event_id} />
           ) : (
-            <p>Event has expired or reched it's signup limit!</p>
+            <p>Event has expired or reached it's signup limit!</p>
           )}
           <SaveButton event_id={event_id} />
         </section>

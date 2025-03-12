@@ -1,5 +1,20 @@
 # Events Platform
 
+## Contents
+
+[Project Overview](#project-overview) \
+[Video Walk Through](#video-walkthrough) \
+[Deployed Site](#deployed-site) \
+[Test User Accounts](#test-user-accounts) \
+[Backend Repository](#backend-repository) \
+[How To Run The Project Locally](#how-to-run-this-project-locally)
+
+- [Cloning The Project](#cloning-the-project)
+- [Adding Google API](#adding-the-google-api)
+- [Adding Cloudinary](#adding-cloudinary)
+- [Adding EmailJS](#adding-emailjs)
+- [Adding Firebase](#add-firebase)
+
 ## Project Overview
 
 This is a freelance project for Tech Returners. The website allows users to sign up to events and save events. It also allows staff members to create and manage events.
