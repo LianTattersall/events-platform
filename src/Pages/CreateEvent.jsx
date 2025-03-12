@@ -37,11 +37,20 @@ export default function CreateEvent() {
         setError((curr) => [...curr, key]);
       }
     }
+
+    const eventTimeStamp = new Date(formData.event_date).getTime();
+    if (eventTimeStamp < new Date().getTime()) {
+      setError((curr) => [...curr, "event_date"]);
+      console.log("hello");
+      return null;
+    }
+
     for (const key in formData) {
       if (formData[key] === "") {
         return null;
       }
     }
+
     setLoading(true);
     postEvent({ ...formData, organiser_id: userId })
       .then(({ event }) => {

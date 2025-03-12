@@ -14,7 +14,7 @@ export default function EventField({
       <div style={{ padding: "5px" }}>
         {error ? (
           <p className="error" style={{ fontSize: "13px" }}>
-            Please enter {label.toLowerCase()}
+            Please enter a valid {label.toLowerCase()}
           </p>
         ) : null}
         <input
