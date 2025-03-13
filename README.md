@@ -21,7 +21,8 @@ This is a freelance project for Tech Returners. The website allows users to sign
 
 ## Video walk through
 
-link: https://youtu.be/Dl79b-riifo
+link: https://youtu.be/Dl79b-riifo \
+link: https://www.loom.com/share/3b31991a78a44db9bf54f9757f92e41f?sid=917bec20-02c1-4aee-993c-a18fdc0918b9 (demo of the google calendar feature)
 
 ## Deployed Site
 
@@ -31,10 +32,13 @@ https://lian468eventsplatform.netlify.app/
 
 email: charlotte2468642@gmail.com \
 email: alexander369632468@gmail.com \
-Gmail password: event-organiser-test-user \
+Gmail password: event-organiser-test-user
+
 **These accounts are test users on the Google Cloud Project and are the only accounts who can login via google and add events to their google calendar**
 
 **These emails are already signed up to the website. To use these accounts login with the "Login with Google button"**
+
+**Unfortunately, I can't disable the additional verification that google requires when logging into these accounts so you might not be able to use them. Please contact me (lianwan468@gmail.com) if you would like to use these accounts.**
 
 ## Backend Repository
 
