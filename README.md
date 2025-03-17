@@ -38,7 +38,31 @@ Gmail password: event-organiser-test-user
 
 **These emails are already signed up to the website. To use these accounts login with the "Login with Google button"**
 
-**Unfortunately, I can't disable the additional verification that google requires when logging into these accounts so you might not be able to use them. Please contact me (lianwan468@gmail.com) if you would like to use these accounts.**
+**To get past the Two Factor Verification click on the "Try another way" -> "Enter one of your 8-digit backup codes" and enter one of the following codes**
+
+charlotte2468642@gmail.com: \
+4379 7869 \
+6330 6452 \
+1341 6035 \
+9213 6025 \
+2222 9229 \
+9290 2513 \
+7423 7545 \
+8982 6906 \
+9613 2804 \
+6701 3375
+
+alexander369632468@gmail.com \
+9884 1622 \
+4220 8014 \
+6936 7553 \
+0602 6559 \
+5855 0638 \
+8654 5961 \
+4112 7554 \
+9794 7484 \
+1288 0358 \
+6780 9094
 
 ## Backend Repository
 
